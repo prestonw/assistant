@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { LibraryNav, formatItem, formatSection } from '@beaverbuilder/cloud-ui';
-import { Page, Icon } from 'assistant/ui';
+import { Page, Icon, Input } from 'assistant/ui';
 import { useAppState, useSystemState } from 'assistant/data';
 import Actions from './actions';
 import LibrariesFilter from './filter';
@@ -28,7 +28,7 @@ const getSections = (user, teams, libraries) => {
 		{
 			key: 'user',
 			label: user ? user.name : '',
-			avatar: user.avatar ? user.avatar.sizes.thumb.url : user.gravatar.md,
+			avatar: user?.avatar ? user.avatar.sizes.thumb.url : user?.gravatar?.md,
 			to: '/libraries/user',
 			items: getItems(),
 			canCreateLibraries: true,
@@ -64,6 +64,29 @@ export default ({ preloadedLib = false, preloadedTeams = false }) => {
 	const libraries = preloadedLib ? preloadedLib : librariesData;
 	const teams = preloadedTeams ? preloadedTeams : teamsData;
 
+	// --- New feature: filter LibraryNav sections by global filter.search (if present)
+
+	const search = (filter?.search || '').trim().toLowerCase();
+
+	const allSections = useMemo(
+		() => getSections(cloudUser, teams, libraries),
+		[cloudUser, teams, libraries]
+	);
+	const filteredSections = useMemo(() => {
+		if (!search) return allSections;
+		const match = (s) => (s || '').toLowerCase().includes(search);
+		const filterItems = (items = []) =>
+			items.filter((it) => match(it?.label) || match(it?.name));
+		return allSections
+			.map((section) => ({
+				...section,
+				items: filterItems(section.items),
+				isEnabled: section.isEnabled ?? true,
+			}))
+			// keep sections that have at least one matching item
+			.filter((s) => s.items && s.items.length);
+	}, [allSections, search]);
+
 	return (
 		<Page
 			title={__('Libraries')}
@@ -73,41 +96,32 @@ export default ({ preloadedLib = false, preloadedTeams = false }) => {
 			padX={false}
 			padY={false}
 		>
+			{/* Existing filter bar (drives filter in app state, incl. filter.search) */}
+			<LibrariesFilter />
+
 			<LibraryNav
-				sections={getSections(cloudUser, teams, libraries)}
+				sections={filteredSections}
 				isLoading={isLoadingLibraries}
 				linkSectionHeaders={false}
 				displayItemsAs="grid"
 			/>
-		</Page>
-	);
-
-	return (
-		<Page
-			title={__('Libraries')}
-			icon={<Icon.Library context="sidebar" />}
-			shouldShowBackButton={false}
-			actions={<Actions />}
-			padX={false}
-			padY={false}
-		>
-			<LibrariesFilter />
 
 			<div className="fl-asst-libraries">
-				{('all' === owner || 'user' === owner) && (
+				{(!owner || owner === 'all' || owner === 'user') && (
 					<LibrariesList
 						headline={cloudUser.name.endsWith('s') ? `${cloudUser.name}'` : `${cloudUser.name}'s`}
 						query={query}
 					/>
 				)}
-				{!!libraries.shared.length && (
+				{!!libraries?.shared?.length && (owner === 'all' || owner === 'shared') && (
 					<LibrariesList headline={__('Shared Libraries')} type="shared" query={query} />
 				)}
-				{teams.map((team, i) => {
-					if ('all' === owner || `team_${team.id}` === owner) {
+
+				{teams.map((team) => {
+					if (owner === 'all' || owner === `team_${team.id}`) {
 						return (
 							<LibrariesList
-								key={i}
+								key={team.id}
 								headline={cloudUser.name.endsWith('s') ? `${team.name}'` : `${team.name}'s`}
 								type="team"
 								team={team}
@@ -115,6 +129,7 @@ export default ({ preloadedLib = false, preloadedTeams = false }) => {
 							/>
 						);
 					}
+					return null;
 				})}
 			</div>
 		</Page>

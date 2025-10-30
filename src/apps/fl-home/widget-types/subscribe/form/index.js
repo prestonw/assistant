@@ -28,13 +28,14 @@ const SubscribeForm = () => {
 	}, []);
 
 	const isValidEmail = (email) => {
-		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-			// eslint-disable-line no-useless-escape
-			return true;
+		// RFC-lite email pattern, no unnecessary escapes
+		const pattern = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+		if (pattern.test(email)) {
+		  return true;
 		}
 		alert(invalidText);
 		return false;
-	};
+	  };
 
 	const subscribeUser = () => {
 		if (isValidEmail(email)) {
