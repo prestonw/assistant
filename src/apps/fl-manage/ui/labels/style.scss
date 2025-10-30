@@ -1,5 +1,4 @@
 .fl-asst-edit-labels {
-
 	.fl-asst-table-cell {
 		align-items: center;
 		display: flex;
@@ -8,24 +7,24 @@
 
 		&:first-child {
 			flex: 0;
-			padding-left:0;
+			padding-left: 0;
 		}
 		&:last-child {
 			flex: 0 1 auto;
-			padding-right:0;
+			padding-right: 0;
 		}
 	}
 
 	.fl-asst-label-color {
 		width: 24px;
 		height: 24px;
-	    border-radius: 100%;
+		border-radius: 100%;
 	}
 
 	.fl-asst-table-cell-edit {
 		padding: var(--fluid-lg-space) !important;
 		box-shadow: 0px 3px 20px 3px rgba(0, 0, 0, 0.15);
-		margin: 10px calc( 0px - var(--fluid-lg-space) );
+		margin: 10px calc(0px - var(--fluid-lg-space));
 
 		.fl-asst-circle-picker {
 			padding-top: var(--fluid-sm-space);

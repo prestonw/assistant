@@ -1,12 +1,10 @@
-import { lazy } from 'react'
-import { setupLibrariesApp } from '@beaverbuilder/cloud-ui'
-import { Icon } from 'assistant/ui'
+import { lazy } from 'react';
+import { setupLibrariesApp } from '@beaverbuilder/cloud-ui';
+import { Icon } from 'assistant/ui';
 
-const App = lazy( () => import(
-	/* webpackChunkName: "app-libraries" */ './app'
-) )
+const App = lazy(() => import(/* webpackChunkName: "app-libraries" */ './app'));
 
-setupLibrariesApp( {
+setupLibrariesApp({
 	root: App,
 	icon: Icon.Library,
-} )
+});

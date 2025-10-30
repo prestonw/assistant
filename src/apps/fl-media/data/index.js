@@ -7,6 +7,6 @@ export const defaultState = {
 		label: '0',
 	},
 	showUploader: true,
-}
+};
 
-export const cache = [ 'listStyle', 'query', 'showUploader' ]
+export const cache = ['listStyle', 'query', 'showUploader'];

@@ -1,150 +1,134 @@
-import React, { useEffect } from 'react'
-import { getWpRest } from 'assistant/utils/wordpress'
-import { __, sprintf } from '@wordpress/i18n'
-import { App, Page, Button, List, Filter, Layout } from 'assistant/ui'
-import {
-	useAppState,
-	getAppActions,
-	getUpdaterStore,
-	getUpdaterActions,
-} from 'assistant/data'
-import { defaultState } from './'
-import useUpdateCounts from './use-update-counts'
-import AppIcon from './icon'
+import React, { useEffect } from 'react';
+import { getWpRest } from 'assistant/utils/wordpress';
+import { __, sprintf } from '@wordpress/i18n';
+import { App, Page, Button, List, Filter, Layout } from 'assistant/ui';
+import { useAppState, getAppActions, getUpdaterStore, getUpdaterActions } from 'assistant/data';
+import { defaultState } from './';
+import useUpdateCounts from './use-update-counts';
+import AppIcon from './icon';
 
-export default props => (
+export default (props) => (
 	<App.Config
-		pages={ {
+		pages={{
 			default: UpdatesMain,
 			'plugin/:id': Page.Plugin,
-			'theme/:id': Page.Theme
-		} }
-		{ ...props }
+			'theme/:id': Page.Theme,
+		}}
+		{...props}
 	/>
-)
+);
 
-const UpdatesMain = ( { handle } ) => {
-	const updater = getUpdaterStore()
-	const { setUpdateQueueItems } = getUpdaterActions()
-	const { updatingAll, updateType, listStyle } = useAppState( handle )
-	const { setUpdatingAll, setUpdateType, setListStyle } = getAppActions( handle )
-	const { getContent } = getWpRest()
-	const { plugins, themes, total, hasUpdates } = useUpdateCounts()
+const UpdatesMain = ({ handle }) => {
+	const updater = getUpdaterStore();
+	const { setUpdateQueueItems } = getUpdaterActions();
+	const { updatingAll, updateType, listStyle } = useAppState(handle);
+	const { setUpdatingAll, setUpdateType, setListStyle } = getAppActions(handle);
+	const { getContent } = getWpRest();
+	const { plugins, themes, total, hasUpdates } = useUpdateCounts();
 
 	const updateAll = () => {
-		setUpdatingAll( true )
-		getContent( 'updates' ).then( response => {
-			const { items } = response.data
-			setUpdateQueueItems( items )
-		} ).catch( error => {
-			console.log( error ) // eslint-disable-line no-console
-			setUpdatingAll( false )
-			alert( __( 'Something went wrong. Please try again.' ) )
-		} )
-	}
+		setUpdatingAll(true);
+		getContent('updates')
+			.then((response) => {
+				const { items } = response.data;
+				setUpdateQueueItems(items);
+			})
+			.catch((error) => {
+				console.log(error); // eslint-disable-line no-console
+				setUpdatingAll(false);
+				alert(__('Something went wrong. Please try again.'));
+			});
+	};
 
 	const maybeSetUpdatingAll = () => {
-		const { updateQueue } = updater.getState()
-		if ( ! Object.values( updateQueue ).length ) {
-			setUpdatingAll( false )
+		const { updateQueue } = updater.getState();
+		if (!Object.values(updateQueue).length) {
+			setUpdatingAll(false);
 		}
-	}
+	};
 
-	useEffect( () => {
-		maybeSetUpdatingAll()
-		const unsubscribe = updater.subscribe( maybeSetUpdatingAll )
-		return () => unsubscribe()
-	}, [] )
+	useEffect(() => {
+		maybeSetUpdatingAll();
+		const unsubscribe = updater.subscribe(maybeSetUpdatingAll);
+		return () => unsubscribe();
+	}, []);
 
 	const HeaderActions = () => {
-
-		if ( ! hasUpdates ) {
-			return null
+		if (!hasUpdates) {
+			return null;
 		}
 
-		if ( updatingAll ) {
-			return (
-				<Button.Loading>
-					{ __( 'Updating' ) }
-				</Button.Loading>
-			)
+		if (updatingAll) {
+			return <Button.Loading>{__('Updating')}</Button.Loading>;
 		}
-		return (
-			<Button onClick={ updateAll }>
-				{ __( 'Update All' ) }
-			</Button>
-		)
-	}
+		return <Button onClick={updateAll}>{__('Update All')}</Button>;
+	};
 
 	const UpdatesFilter = () => {
-
 		const types = {
-			'all': sprintf( 'All (%s)', total ),
-			plugins: sprintf( 'Plugin (%s)', plugins ),
-			themes: sprintf( 'Theme (%s)', themes ),
-		}
+			all: sprintf('All (%s)', total),
+			plugins: sprintf('Plugin (%s)', plugins),
+			themes: sprintf('Theme (%s)', themes),
+		};
 
 		const listStyles = {
-			card: __( 'Cards' ),
-			list: __( 'Compact' )
-		}
+			card: __('Cards'),
+			list: __('Compact'),
+		};
 
 		const resetFilter = () => {
-			setUpdateType( defaultState.updateType )
-			setListStyle( defaultState.listStyle )
-		}
+			setUpdateType(defaultState.updateType);
+			setListStyle(defaultState.listStyle);
+		};
 
 		return (
 			<Filter isSticky>
 				<Filter.RadioGroupItem
-					title={ __( 'Type' ) }
-					items={ types }
-					value={ updateType }
-					defaultValue={ defaultState.updateType }
-					onChange={ value => setUpdateType( value ) }
+					title={__('Type')}
+					items={types}
+					value={updateType}
+					defaultValue={defaultState.updateType}
+					onChange={(value) => setUpdateType(value)}
 				/>
 				<Filter.RadioGroupItem
-					title={ __( 'Display As' ) }
-					items={ listStyles }
-					value={ listStyle }
-					defaultValue={ defaultState.listStyle }
-					onChange={ value => setListStyle( value ) }
+					title={__('Display As')}
+					items={listStyles}
+					value={listStyle}
+					defaultValue={defaultState.listStyle}
+					onChange={(value) => setListStyle(value)}
 				/>
-				<Filter.Button onClick={ resetFilter }>{__( 'Reset Filter' )}</Filter.Button>
+				<Filter.Button onClick={resetFilter}>{__('Reset Filter')}</Filter.Button>
 			</Filter>
-		)
-	}
+		);
+	};
 
 	return (
 		<Page
-			title={ __( 'Updates' ) }
-			icon={ <AppIcon /> }
-			shouldShowBackButton={ false }
-			actions={ <HeaderActions /> }
-			padY={ false }
-			shouldScroll={ false }
+			title={__('Updates')}
+			icon={<AppIcon />}
+			shouldShowBackButton={false}
+			actions={<HeaderActions />}
+			padY={false}
+			shouldScroll={false}
 		>
+			{!hasUpdates && <Layout.Box>{__('You have no updates.')}</Layout.Box>}
 
-			{ ! hasUpdates && (
-				<Layout.Box>{__( 'You have no updates.' )}</Layout.Box>
-			)}
-
-			{ hasUpdates && (
+			{hasUpdates && (
 				<List.Updates
-					updateType={ updateType }
-					getItemProps={ ( item, defaultProps ) => {
+					updateType={updateType}
+					getItemProps={(item, defaultProps) => {
 						return {
 							...defaultProps,
 							to: {
 								pathname: `/${handle}/${item.type}/${item.id}`,
-								state: { item }
+								state: { item },
 							},
-						}
-					} }
-					before={ <UpdatesFilter /> }
-					listStyle={ listStyle }
+						};
+					}}
+					before={<UpdatesFilter />}
+					listStyle={listStyle}
 				/>
 			)}
 		</Page>
-	)
-}
+	);
+};

@@ -1,9 +1,9 @@
-import Config from './config'
-import List from './list'
+import Config from './config';
+import List from './list';
 
 const App = {
 	Config,
-	List
-}
+	List,
+};
 
-export default App
+export default App;

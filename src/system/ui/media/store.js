@@ -1,10 +1,10 @@
-import { registerStore } from 'data/registry'
+import { registerStore } from 'data/registry';
 
-const key = 'fl-media/uploader'
+const key = 'fl-media/uploader';
 
-registerStore( key, {
+registerStore(key, {
 	state: {
 		current: 0,
 		items: [],
-	}
-} )
+	},
+});

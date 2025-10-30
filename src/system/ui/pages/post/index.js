@@ -1,243 +1,246 @@
-import React, { useState } from 'react'
-import { __, sprintf } from '@wordpress/i18n'
-import { Button, Form, List, Page, Layout, Icon, Notice } from 'ui'
-import { getSystemActions, getSystemConfig } from 'data'
-import { getWpRest } from 'utils/wordpress'
-import { createSlug } from 'utils/url'
-import { getSrcSet } from 'utils/image'
-import { getFirstFocusableChild } from 'utils/dom'
-import { applyFilters } from '@wordpress/hooks'
-import { getPostActions } from './actions'
-import { useParentOptions } from './parent'
-import { LockView } from './lock'
-import './style.scss'
+import React, { useState } from 'react';
+import { __, sprintf } from '@wordpress/i18n';
+import { Button, Form, List, Page, Layout, Icon, Notice } from 'ui';
+import { getSystemActions, getSystemConfig } from 'data';
+import { getWpRest } from 'utils/wordpress';
+import { createSlug } from 'utils/url';
+import { getSrcSet } from 'utils/image';
+import { getFirstFocusableChild } from 'utils/dom';
+import { applyFilters } from '@wordpress/hooks';
+import { getPostActions } from './actions';
+import { useParentOptions } from './parent';
+import { LockView } from './lock';
+import './style.scss';
 
-
-export const Post = ( { location, match, history, CloudUI } ) => {
-	const { item } = location.state
-	const { setCurrentHistoryState } = getSystemActions()
-	const { contentTypes, contentStatus, taxonomies, isSiteAdmin } = getSystemConfig()
-	const { createNotice } = Notice.useNotices()
-	const { isHierarchical, labels, supports, templates } = contentTypes[ item.type ]
-	const [ passwordVisible, setPasswordVisible ] = useState( 'protected' === item.visibility )
-	const [ featureThumbnail, setFeatureThumbnail ] = useState( item.thumbnailData )
-	const parentOptions = useParentOptions( item.type )
-	const wpRest = getWpRest()
+export const Post = ({ location, match, history, CloudUI }) => {
+	const { item } = location.state;
+	const { setCurrentHistoryState } = getSystemActions();
+	const { contentTypes, contentStatus, taxonomies, isSiteAdmin } = getSystemConfig();
+	const { createNotice } = Notice.useNotices();
+	const { isHierarchical, labels, supports, templates } = contentTypes[item.type];
+	const [passwordVisible, setPasswordVisible] = useState('protected' === item.visibility);
+	const [featureThumbnail, setFeatureThumbnail] = useState(item.thumbnailData);
+	const parentOptions = useParentOptions(item.type);
+	const wpRest = getWpRest();
 
 	const uploadFeatureImage = () => {
-		const customUploader = wp.media( {
+		const customUploader = wp.media({
 			title: 'Select an Image',
 			id: 'fl-asst-media-upload',
 			button: {
-				text: 'Choose Featured Image'
+				text: 'Choose Featured Image',
 			},
 			multiple: false,
 			library: {
-				type: [ 'image' ]
+				type: ['image'],
 			},
-			width: '50%'
-		} )
+			width: '50%',
+		});
 
-		customUploader.open()
-		customUploader.on( 'select', function() {
-			var attachment = customUploader.state().get( 'selection' ).first().toJSON()
-			setFeatureThumbnail( attachment )
-			setValues( { thumbnailData: attachment }, false )
-		} )
-	}
+		customUploader.open();
+		customUploader.on('select', function () {
+			var attachment = customUploader.state().get('selection').first().toJSON();
+			setFeatureThumbnail(attachment);
+			setValues({ thumbnailData: attachment }, false);
+		});
+	};
 
 	const removeFeatureImage = () => {
-		setFeatureThumbnail( false )
-		setValues( { thumbnailData: null }, false )
-	}
+		setFeatureThumbnail(false);
+		setValues({ thumbnailData: null }, false);
+	};
 
 	const getFeaturedImageSrcSet = () => {
-		if ( ! featureThumbnail ) {
-			return ''
+		if (!featureThumbnail) {
+			return '';
 		}
-		const { sizes } = featureThumbnail
-		let srcSet = ''
-		if ( sizes ) {
-			srcSet = getSrcSet( sizes )
+		const { sizes } = featureThumbnail;
+		let srcSet = '';
+		if (sizes) {
+			srcSet = getSrcSet(sizes);
 		}
-		return srcSet
-	}
+		return srcSet;
+	};
 
 	const args = {
 		post: item,
 		baseURL: match.url,
-	}
-	const additionalTabs = applyFilters( 'fl-asst.post-tabs', {}, args )
+	};
+	const additionalTabs = applyFilters('fl-asst.post-tabs', {}, args);
 
 	const tabs = {
 		general: {
-			label: __( 'General' ),
+			label: __('General'),
 			path: match.url,
 			exact: true,
 			sections: {
 				title: {
-					fields: ( { values } ) => {
+					fields: ({ values }) => {
 						return (
 							<>
-								<Layout.Headline>{ values.title }</Layout.Headline>
+								<Layout.Headline>{values.title}</Layout.Headline>
 								<ElevatorButtons />
 							</>
-						)
-					}
+						);
+					},
 				},
 				general: {
 					fields: {
 						title: {
-							label: __( 'Title' ),
+							label: __('Title'),
 							component: 'text',
 							id: 'post_title',
 						},
 						url: {
-							label: __( 'URL' ),
+							label: __('URL'),
 							component: 'url',
 							id: 'post_url',
 						},
 						more: {
 							component: () => (
 								<Button
-									onClick={ () => {
-										history.replace( match.url + '/edit', location.state )
-									} }
-									style={ { margin: 'auto' } }
-								>{__( 'Show More Details' )}</Button> )
-						}
-					}
+									onClick={() => {
+										history.replace(match.url + '/edit', location.state);
+									}}
+									style={{ margin: 'auto' }}
+								>
+									{__('Show More Details')}
+								</Button>
+							),
+						},
+					},
 				},
 				labels: {
-					label: __( 'Labels' ),
-					description: __( 'Labels allow you to mark posts or pages for organization purposes. Labels are not publicly visible on your site.' ),
+					label: __('Labels'),
+					description: __(
+						'Labels allow you to mark posts or pages for organization purposes. Labels are not publicly visible on your site.',
+					),
 					fields: {
 						labels: {
 							component: 'labels',
 							alwaysCommit: true,
-							onAdd: label => {
-								wpRest.posts().addLabel( item.id, label.id )
+							onAdd: (label) => {
+								wpRest.posts().addLabel(item.id, label.id);
 							},
-							onRemove: label => {
-								wpRest.posts().removeLabel( item.id, label.id )
+							onRemove: (label) => {
+								wpRest.posts().removeLabel(item.id, label.id);
 							},
 						},
-					}
+					},
 				},
 				actions: {
-					label: __( 'Actions' ),
+					label: __('Actions'),
 					fields: {
 						actions: {
 							component: 'actions',
-							options: args => getPostActions( { history, createNotice, CloudUI, ...args } ),
+							options: (args) => getPostActions({ history, createNotice, CloudUI, ...args }),
 						},
-					}
+					},
 				},
 			},
 		},
 		edit: {
-			label: __( 'Edit' ),
+			label: __('Edit'),
 			path: match.url + '/edit',
 			sections: {
 				general: {
 					fields: {
 						title: {
-							label: __( 'Title' ),
+							label: __('Title'),
 							component: 'text',
-							id: 'post_title'
+							id: 'post_title',
 						},
 						slug: {
-							label: __( 'Slug' ),
+							label: __('Slug'),
 							component: 'text',
 							id: 'post_name',
 							sanitize: createSlug,
-							disabled: true
+							disabled: true,
 						},
 						url: {
-							label: __( 'URL' ),
+							label: __('URL'),
 							component: 'url',
-							id: 'post_url'
-						}
-					}
+							id: 'post_url',
+						},
+					},
 				},
 				publish: {
-					label: __( 'Publish Settings' ),
+					label: __('Publish Settings'),
 					fields: {
 						status: {
-							label: __( 'Status' ),
+							label: __('Status'),
 							labelPlacement: 'beside',
 							component: 'plain-text',
-							sanitize: value =>
-								contentStatus[value] ? contentStatus[value] : value
+							sanitize: (value) => (contentStatus[value] ? contentStatus[value] : value),
 						},
 						visibility: {
-							label: __( 'Visibility' ),
+							label: __('Visibility'),
 							labelPlacement: 'beside',
 							component: 'select',
 							options: {
-								public: __( 'Public' ),
-								private: __( 'Private' ),
-								protected: __( 'Protected' )
+								public: __('Public'),
+								private: __('Private'),
+								protected: __('Protected'),
 							},
-							onChange: ( { value, setValue } ) => {
-								switch ( value ) {
-								case 'public':
-								case 'protected':
-									setValue( 'status', 'publish' )
-									break
-								case 'private':
-									setValue( 'status', 'private' )
-									break
+							onChange: ({ value, setValue }) => {
+								switch (value) {
+									case 'public':
+									case 'protected':
+										setValue('status', 'publish');
+										break;
+									case 'private':
+										setValue('status', 'private');
+										break;
 								}
-								setPasswordVisible( 'protected' === value )
-							}
+								setPasswordVisible('protected' === value);
+							},
 						},
 						password: {
-							label: __( 'Password' ),
+							label: __('Password'),
 							labelPlacement: 'beside',
 							component: 'text',
 							id: 'post_password',
-							isVisible: passwordVisible
+							isVisible: passwordVisible,
 						},
 						date: {
-							label: __( 'Publish Date' ),
+							label: __('Publish Date'),
 							labelPlacement: 'beside',
 							component: 'calender',
 							id: 'publish_date',
-							value: item.date
+							value: item.date,
 						},
 						post_author: {
-							label: __( 'Author' ),
+							label: __('Author'),
 							labelPlacement: 'beside',
 							component: 'select',
 							id: 'post_author',
 							options: item.authorList,
-							isVisible: isSiteAdmin ? true : false
-						}
+							isVisible: isSiteAdmin ? true : false,
+						},
 					},
 				},
 				taxonomies: {
-					label: __( 'Taxonomies' ),
-					isVisible: !! Object.keys( item.terms ).length,
-					fields: ( { fields } ) => {
-						const { value, onChange } = fields.terms
-						const values = { ...value }
-						return Object.keys( values ).map( ( taxonomy, key ) => (
-							<Form.Item key={ key } label={ taxonomies[taxonomy].labels.plural }>
+					label: __('Taxonomies'),
+					isVisible: !!Object.keys(item.terms).length,
+					fields: ({ fields }) => {
+						const { value, onChange } = fields.terms;
+						const values = { ...value };
+						return Object.keys(values).map((taxonomy, key) => (
+							<Form.Item key={key} label={taxonomies[taxonomy].labels.plural}>
 								<Form.TaxonomyTermsItem
-									taxonomy={ taxonomy }
-									value={ [ ...values[taxonomy] ] }
-									onChange={ newValue => {
-										values[ taxonomy ] = newValue
-										onChange( { ...values } )
-									} }
+									taxonomy={taxonomy}
+									value={[...values[taxonomy]]}
+									onChange={(newValue) => {
+										values[taxonomy] = newValue;
+										onChange({ ...values });
+									}}
 								/>
 							</Form.Item>
-						) )
-					}
+						));
+					},
 				},
 				excerpt: {
-					label: __( 'Excerpt' ),
+					label: __('Excerpt'),
 					isVisible: supports.excerpt,
 					fields: {
 						excerpt: {
@@ -249,50 +252,49 @@ export const Post = ( { location, match, history, CloudUI } ) => {
 					},
 				},
 				attributes: {
-					label: __( 'Attributes' ),
-					isVisible:
-						!! Object.keys( templates ).length || isHierarchical || supports.order,
+					label: __('Attributes'),
+					isVisible: !!Object.keys(templates).length || isHierarchical || supports.order,
 					fields: {
 						template: {
-							label: __( 'Template' ),
+							label: __('Template'),
 							labelPlacement: 'beside',
 							component: 'select',
-							isVisible: !! Object.keys( templates ).length,
+							isVisible: !!Object.keys(templates).length,
 							options: () => {
 								const options = {
-									default: __( 'Default' )
-								}
-								Object.keys( templates ).map( key => {
-									options[templates[key]] = key
-								} )
-								return options
-							}
+									default: __('Default'),
+								};
+								Object.keys(templates).map((key) => {
+									options[templates[key]] = key;
+								});
+								return options;
+							},
 						},
 						parent: {
-							label: __( 'Parent' ),
+							label: __('Parent'),
 							labelPlacement: 'beside',
 							component: 'select',
 							id: 'post_parent',
 							isVisible: isHierarchical,
-							options: parentOptions
+							options: parentOptions,
 						},
 						order: {
-							label: __( 'Order' ),
+							label: __('Order'),
 							labelPlacement: 'beside',
 							component: 'text',
 							id: 'menu_order',
-							isVisible: supports.order
-						}
-					}
+							isVisible: supports.order,
+						},
+					},
 				},
 				featureimgUpload: {
-					label: __( 'Feature Image' ),
+					label: __('Feature Image'),
 					isVisible: supports.thumbnail,
 					fields: {
 						featureimgUpload: {
 							id: 'post_feature_image',
-							isVisible: supports.thumbnail && ! featureThumbnail,
-							label: __( 'Set Feature Image' ),
+							isVisible: supports.thumbnail && !featureThumbnail,
+							label: __('Set Feature Image'),
 							component: 'text',
 							onClick: uploadFeatureImage,
 						},
@@ -311,244 +313,230 @@ export const Post = ( { location, match, history, CloudUI } ) => {
 							isVisible: featureThumbnail,
 							component: 'button',
 							onClick: removeFeatureImage,
-
 						},
-
 					},
 				},
 				discussion: {
-					label: __( 'Discussion' ),
+					label: __('Discussion'),
 					isVisible: supports.comments || supports.trackbacks,
 					fields: {
 						commentsAllowed: {
-							label: __( 'Allow Comments' ),
+							label: __('Allow Comments'),
 							labelPlacement: 'beside',
 							component: 'checkbox',
-							isVisible: supports.comments
+							isVisible: supports.comments,
 						},
 						pingbacksAllowed: {
-							label: __( 'Allow Pingbacks' ),
+							label: __('Allow Pingbacks'),
 							labelPlacement: 'beside',
 							component: 'checkbox',
-							isVisible: supports.trackbacks
-						}
-					}
-				}
-			}
+							isVisible: supports.trackbacks,
+						},
+					},
+				},
+			},
 		},
 		comments: {
-			label: __( 'Comments' ),
+			label: __('Comments'),
 			path: match.url + '/comments',
 			isVisible: supports.comments,
 			sections: () => (
 				<List.Comments
-					query={ { post__in: [ item.id ] } }
-					getItemProps={ ( item, defaultProps ) => ( {
+					query={{ post__in: [item.id] }}
+					getItemProps={(item, defaultProps) => ({
 						...defaultProps,
 						to: {
 							pathname: `/fl-comments/comment/${item.id}`,
-							state: { item }
-						}
-					} ) }
-					scrollerClassName='fl-asst-outset'
+							state: { item },
+						},
+					})}
+					scrollerClassName="fl-asst-outset"
 				/>
 			),
 		},
 		...additionalTabs,
-	}
+	};
 
-	const onSubmit = ( { changed, ids, setValue } ) => {
+	const onSubmit = ({ changed, ids, setValue }) => {
 		const data = {
 			meta: {},
-			terms: {}
-		}
+			terms: {},
+		};
 
-		for ( let key in changed ) {
-			if ( ! ids[key] ) {
-				continue
+		for (let key in changed) {
+			if (!ids[key]) {
+				continue;
 			}
-			data[ids[key]] = changed[key]
+			data[ids[key]] = changed[key];
 		}
 
-		if ( 'visibility' in changed ) {
-			switch ( changed.visibility ) {
-			case 'public':
-				data.post_status = 'publish'
-				data.post_password = ''
-				break
-			case 'private':
-				data.post_status = 'private'
-				data.post_password = ''
-				break
-			case 'protected':
-				data.post_status = 'publish'
-				break
+		if ('visibility' in changed) {
+			switch (changed.visibility) {
+				case 'public':
+					data.post_status = 'publish';
+					data.post_password = '';
+					break;
+				case 'private':
+					data.post_status = 'private';
+					data.post_password = '';
+					break;
+				case 'protected':
+					data.post_status = 'publish';
+					break;
 			}
 		}
-		if ( 'commentsAllowed' in changed ) {
-			data.comment_status = changed.commentsAllowed ? 'open' : 'closed'
+		if ('commentsAllowed' in changed) {
+			data.comment_status = changed.commentsAllowed ? 'open' : 'closed';
 		}
-		if ( 'pingbacksAllowed' in changed ) {
-			data.ping_status = changed.pingbacksAllowed ? 'open' : 'closed'
+		if ('pingbacksAllowed' in changed) {
+			data.ping_status = changed.pingbacksAllowed ? 'open' : 'closed';
 		}
-		if ( 'template' in changed ) {
-			data.meta._wp_page_template = changed.template
+		if ('template' in changed) {
+			data.meta._wp_page_template = changed.template;
 		}
-		if ( 'parent' in changed ) {
-			data.post_parent = changed.parent.split( ':' ).pop()
+		if ('parent' in changed) {
+			data.post_parent = changed.parent.split(':').pop();
 		}
-		if ( 'terms' in changed ) {
-			data.terms = changed.terms
+		if ('terms' in changed) {
+			data.terms = changed.terms;
 		}
-		if ( 'thumbnailData' in changed ) {
-			data.thumbnail = changed.thumbnailData ? changed.thumbnailData.id : '0'
-		}
-
-		if ( 'post_author' in changed ) {
-			data.post_author = changed.post_author
+		if ('thumbnailData' in changed) {
+			data.thumbnail = changed.thumbnailData ? changed.thumbnailData.id : '0';
 		}
 
-		const handleError = error => {
+		if ('post_author' in changed) {
+			data.post_author = changed.post_author;
+		}
 
-			createNotice( {
+		const handleError = (error) => {
+			createNotice({
 				id: 'publish-error',
 				status: 'error',
-				content: __( 'Error: Changes not published! Please try again.' )
-			} )
+				content: __('Error: Changes not published! Please try again.'),
+			});
 
-			if ( error ) {
-				console.log( error ) // eslint-disable-line no-console
+			if (error) {
+				console.log(error); // eslint-disable-line no-console
 			}
-		}
+		};
 
-		wpRest.posts().update( item.id, 'data', data ).then( response => {
-			const { data } = response
-			if ( data.error ) {
-				handleError()
-			} else {
-				setCurrentHistoryState( { item: data.post } )
-				setValue( 'url', data.post.url, true )
+		wpRest
+			.posts()
+			.update(item.id, 'data', data)
+			.then((response) => {
+				const { data } = response;
+				if (data.error) {
+					handleError();
+				} else {
+					setCurrentHistoryState({ item: data.post });
+					setValue('url', data.post.url, true);
 
-				createNotice( {
-					id: 'publish-success',
-					status: 'success',
-					content: __( 'Changes published!' )
-				} )
-			}
-		} ).catch( error => {
-			handleError( error )
-		} )
-	}
+					createNotice({
+						id: 'publish-success',
+						status: 'success',
+						content: __('Changes published!'),
+					});
+				}
+			})
+			.catch((error) => {
+				handleError(error);
+			});
+	};
 
-	const {
-		renderForm,
-		resetForm,
-		submitForm,
-		hasChanges,
-		setValues
-	} = Form.useForm( {
+	const { renderForm, resetForm, submitForm, hasChanges, setValues } = Form.useForm({
 		tabs,
 		renderTabs: false,
 		onSubmit,
-		onReset: ( { state } ) => {
-			setFeatureThumbnail( state.thumbnailData.value )
+		onReset: ({ state }) => {
+			setFeatureThumbnail(state.thumbnailData.value);
 		},
 		defaults: {
 			...item,
-			parent: item.parent ? `parent:${item.parent}` : 0
-		}
-	} )
+			parent: item.parent ? `parent:${item.parent}` : 0,
+		},
+	});
 
 	const Footer = () => {
-		return (
-			<Layout.PublishBar
-				onPublish={ submitForm }
-				onDiscard={ resetForm }
-			/>
-		)
-	}
+		return <Layout.PublishBar onPublish={submitForm} onDiscard={resetForm} />;
+	};
 
 	const Hero = () => {
-		if ( ! featureThumbnail ) {
-			return null
+		if (!featureThumbnail) {
+			return null;
 		}
-		const { alt, title, height, width } = featureThumbnail
+		const { alt, title, height, width } = featureThumbnail;
 
-		return featureThumbnail && (
-			<Layout.AspectBox width={ width } height={ height }>
-				<img
-					src={ item.thumbnail }
-					srcSet={ getFeaturedImageSrcSet() }
-					style={ { objectFit: 'cover' } }
-					alt={ alt }
-					title={ title }
-					height={ height }
-					width={ width }
-				/>
-			</Layout.AspectBox>
-		)
-	}
+		return (
+			featureThumbnail && (
+				<Layout.AspectBox width={width} height={height}>
+					<img
+						src={item.thumbnail}
+						srcSet={getFeaturedImageSrcSet()}
+						style={{ objectFit: 'cover' }}
+						alt={alt}
+						title={title}
+						height={height}
+						width={width}
+					/>
+				</Layout.AspectBox>
+			)
+		);
+	};
 
-	const isCurrentPage = () => item.url === window.location.href
+	const isCurrentPage = () => item.url === window.location.href;
 
 	const ElevatorButtons = () => (
 		<div
-			style={ {
+			style={{
 				display: 'flex',
 				flexDirection: 'row',
 				justifyContent: 'space-evenly',
 				margin: '10px 0 0',
-				flex: '0 0 auto'
-			} }
+				flex: '0 0 auto',
+			}}
 		>
-			{! isCurrentPage() && (
-				<Button appearance='elevator' title={ __( 'Go To Post' ) } href={ item.url }>
+			{!isCurrentPage() && (
+				<Button appearance="elevator" title={__('Go To Post')} href={item.url}>
 					<Icon.View />
 				</Button>
 			)}
-			<Button
-				appearance='elevator'
-				title={ __( 'Edit in Admin' ) }
-				href={ item.editUrl }
-			>
+			<Button appearance="elevator" title={__('Edit in Admin')} href={item.editUrl}>
 				<Icon.Edit />
 			</Button>
 			{item.bbCanEdit && (
 				<Button
-					appearance='elevator'
-					title={ sprintf( 'Edit with %s', item.bbBranding ) }
-					href={ item.bbEditUrl }
+					appearance="elevator"
+					title={sprintf('Edit with %s', item.bbBranding)}
+					href={item.bbEditUrl}
 				>
 					<Icon.Beaver />
 				</Button>
 			)}
 		</div>
-	)
+	);
 
 	const focusFirstInput = () => {
-		const el = getFirstFocusableChild( document.querySelector( '.fl-asst-form' ) )
-		if ( el ) {
-			el.focus()
+		const el = getFirstFocusableChild(document.querySelector('.fl-asst-form'));
+		if (el) {
+			el.focus();
 		}
-	}
+	};
 
 	return (
 		<Page
-			title={ labels.editItem }
-			hero={ <Hero /> }
-			footer={ hasChanges && false === item.hasLock && <Footer /> }
-			tabs={ tabs }
-			onLoad={ focusFirstInput }
-			disable={ item.hasLock }
+			title={labels.editItem}
+			hero={<Hero />}
+			footer={hasChanges && false === item.hasLock && <Footer />}
+			tabs={tabs}
+			onLoad={focusFirstInput}
+			disable={item.hasLock}
 		>
 			{item.hasLock && (
-				<Layout.Message status='alert' icon={ Icon.Reject }>
-					{__( 'This post is being edited by another user.' )}
+				<Layout.Message status="alert" icon={Icon.Reject}>
+					{__('This post is being edited by another user.')}
 				</Layout.Message>
 			)}
-			<LockView isLock={ item.hasLock }>
-				{ renderForm() }
-			</LockView>
+			<LockView isLock={item.hasLock}>{renderForm()}</LockView>
 		</Page>
-	)
-}
+	);
+};

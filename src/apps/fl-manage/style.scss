@@ -1,76 +1,76 @@
 .fl-asst {
-    .fl-asst-manage-app-order-list {
-        margin:0;
-        display: flex;
-        flex-direction: column;
+	.fl-asst-manage-app-order-list {
+		margin: 0;
+		display: flex;
+		flex-direction: column;
 
-        li {
-            flex: 0 0 auto;
-            padding: 2px 0;
-            margin: 0;
-            margin-left: -15px;
-            display: flex;
-            flex-direction: row;
-            font-size: 14px;
-            cursor: move;
-            background: var(--fluid-background);
+		li {
+			flex: 0 0 auto;
+			padding: 2px 0;
+			margin: 0;
+			margin-left: -15px;
+			display: flex;
+			flex-direction: row;
+			font-size: 14px;
+			cursor: move;
+			background: var(--fluid-background);
 
-            &.is-dragging {
-                pointer-events: none;
+			&.is-dragging {
+				pointer-events: none;
 
-                * {
-                    pointer-events: none;
-                }
-            }
+				* {
+					pointer-events: none;
+				}
+			}
 
-            .fl-asst-app-drag-handle-box {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                width: 20px;
-                margin-left: 10px;
-                opacity: .4;
-            }
-            &:hover .fl-asst-app-drag-handle-box {
-                opacity: 1;
-            }
+			.fl-asst-app-drag-handle-box {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				width: 20px;
+				margin-left: 10px;
+				opacity: 0.4;
+			}
+			&:hover .fl-asst-app-drag-handle-box {
+				opacity: 1;
+			}
 
-            .fluid-button {
-                flex: 1 1 auto;
-                display: inline-flex;
-                flex-direction: row;
-                align-items: center;
+			.fluid-button {
+				flex: 1 1 auto;
+				display: inline-flex;
+				flex-direction: row;
+				align-items: center;
 				justify-content: flex-start;
-                min-height: 40px;
+				min-height: 40px;
 
-                & > span {
-                    justify-content: flex-start;
-                }
-            }
+				& > span {
+					justify-content: flex-start;
+				}
+			}
 
-            .fl-asst-item-icon {
-                display: inline-flex;
-                flex: 0 0 20px;
-                margin-right: 1em;
-                justify-content: center;
-            }
+			.fl-asst-item-icon {
+				display: inline-flex;
+				flex: 0 0 20px;
+				margin-right: 1em;
+				justify-content: center;
+			}
 
-            .fl-asst-item-reorder-buttons {
-                display: inline-flex;
-                flex-direction: row;
-                flex: 0 0 72px;
+			.fl-asst-item-reorder-buttons {
+				display: inline-flex;
+				flex-direction: row;
+				flex: 0 0 72px;
 
-                .fl-asst-button-space {
-                    display: flex;
-                    flex-direction: row;
-                    flex: 0 0 32px;
-                }
+				.fl-asst-button-space {
+					display: flex;
+					flex-direction: row;
+					flex: 0 0 32px;
+				}
 
-                .fluid-button {
-                    padding: 0 5px;
-                }
-            }
-        }
-    }
+				.fluid-button {
+					padding: 0 5px;
+				}
+			}
+		}
+	}
 }

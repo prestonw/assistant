@@ -1,69 +1,69 @@
 .fl-asst {
-    .fl-asst-attachment-grid-item {
-        height: 100%;
+	.fl-asst-attachment-grid-item {
+		height: 100%;
 
-        & > img {
-            height: 100%;
-        }
-    }
-    .fl-asst-list-thumb-icon {
-        color: var(--fluid-blue);
-    }
-    .fl-asst-grid-list-item {
+		& > img {
+			height: 100%;
+		}
+	}
+	.fl-asst-list-thumb-icon {
+		color: var(--fluid-blue);
+	}
+	.fl-asst-grid-list-item {
+		&:hover {
+			box-shadow:
+				0 0 0 3px var(--fluid-background),
+				0 0 0 6px var(--fluid-blue) !important;
+		}
 
-        &:hover {
-            box-shadow: 0 0 0 3px var(--fluid-background),
-                        0 0 0 6px var(--fluid-blue) !important;
-        }
+		&.fl-asst-grid-item-is-favorite {
+			grid-column-end: span 2;
+			grid-row-end: span 2;
+		}
 
-        &.fl-asst-grid-item-is-favorite {
-            grid-column-end: span 2;
-            grid-row-end: span 2;
-        }
+		.fl-asst-item-extras {
+			top: auto;
+			bottom: 5px;
+			left: 5px;
+			right: 5px;
+			color: var(--fluid-color);
 
-        .fl-asst-item-extras {
-            top: auto;
-            bottom:5px;
-            left: 5px;
-            right: 5px;
-            color: var(--fluid-color);
+			.fluid-button {
+				flex: 1 1 auto;
+				min-width: 32px;
+				padding: 0 2px;
 
-            .fluid-button {
-                flex: 1 1 auto;
-                min-width: 32px;
-                padding: 0 2px;
+				&:hover {
+					transform: scale(1);
+				}
+			}
 
-                &:hover {
-                    transform: scale(1);
-                }
-            }
+			&:first-child {
+				top: auto !important;
+			}
+		}
+		.fl-asst-attachment-item-badge {
+			display: flex;
+			flex: 1 1 auto;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			text-align: center;
+			justify-content: center;
+			align-items: center;
+			font-size: 11px;
+			padding: var(--fluid-sm-space);
 
-            &:first-child {
-                top: auto !important;
-            }
-        }
-        .fl-asst-attachment-item-badge {
-            display: flex;
-            flex: 1 1 auto;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-            font-size: 11px;
-            padding: var(--fluid-sm-space);
-
-            span {
-                background: var(--fluid-background);
-                color: var(--fluid-color);
-                padding: 1px var(--fluid-med-space);
-                border-radius: 12px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-        }
-    }
+			span {
+				background: var(--fluid-background);
+				color: var(--fluid-color);
+				padding: 1px var(--fluid-med-space);
+				border-radius: 12px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
+	}
 }

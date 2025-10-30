@@ -1,3 +1,3 @@
-import * as ReactLaag from 'vendor-react-laag'
+import * as ReactLaag from 'vendor-react-laag';
 
-window.ReactLaag = window.ReactLaag || ReactLaag
+window.ReactLaag = window.ReactLaag || ReactLaag;

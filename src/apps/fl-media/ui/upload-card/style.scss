@@ -5,8 +5,7 @@
 		padding-top: 20px;
 	}
 	.fl-asst-upload-card {
-
-		--space-around: clamp( 10px, 4%, 40px );
+		--space-around: clamp(10px, 4%, 40px);
 		position: relative;
 		display: flex;
 		flex-direction: column;
@@ -37,11 +36,12 @@
 			}
 
 			&:focus-within {
-				box-shadow: inset 0px 0px 0px 2px var(--fluid-background),
-	                        0px 0px 0px 1.5px var(--fluid-accent);
+				box-shadow:
+					inset 0px 0px 0px 2px var(--fluid-background),
+					0px 0px 0px 1.5px var(--fluid-accent);
 			}
 
-			input[type=file] {
+			input[type='file'] {
 				background: transparent;
 				width: 0.1px;
 				height: 0.1px;

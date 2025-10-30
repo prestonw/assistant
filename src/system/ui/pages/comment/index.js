@@ -1,456 +1,430 @@
-import React, { useState } from 'react'
-import { __, sprintf } from '@wordpress/i18n'
-import { useLocation } from 'react-router-dom'
-import { Form, Icon, Button, Page, Layout, Text } from 'ui'
-import { getSystemActions } from 'data'
-import { getWpRest, replyToComment } from 'utils/wordpress'
-import './style.scss'
+import React, { useState } from 'react';
+import { __, sprintf } from '@wordpress/i18n';
+import { useLocation } from 'react-router-dom';
+import { Form, Icon, Button, Page, Layout, Text } from 'ui';
+import { getSystemActions } from 'data';
+import { getWpRest, replyToComment } from 'utils/wordpress';
+import './style.scss';
 
 export const Comment = () => {
-	const { item } = useLocation().state
-	const {
-		id,
-		approved,
-		author,
-		date,
-		content,
-		trash,
-		spam,
-		postId,
-		url,
-		editUrl,
-	} = item
-	const comments = getWpRest()
-	const { setCurrentHistoryState } = getSystemActions()
+	const { item } = useLocation().state;
+	const { id, approved, author, date, content, trash, spam, postId, url, editUrl } = item;
+	const comments = getWpRest();
+	const { setCurrentHistoryState } = getSystemActions();
 
-	const [ responseMessage, setResponseMessage ] = useState( {
+	const [responseMessage, setResponseMessage] = useState({
 		message: '',
 		status: '',
-		icon: ''
-	} )
-	const [ commentStatus, setCommentStatus ] = useState( approved )
-	const [ approveStatus, setApproveStatus ] = useState( approved )
-	const [ trashStatus, setTrashStatus ] = useState( trash )
-	const [ spamStatus, setSpamStatus ] = useState( spam )
-	const [ editContent, setEditContent ] = useState( content )
-	const [ replyValue, setReplyValue ] = useState( '' )
+		icon: '',
+	});
+	const [commentStatus, setCommentStatus] = useState(approved);
+	const [approveStatus, setApproveStatus] = useState(approved);
+	const [trashStatus, setTrashStatus] = useState(trash);
+	const [spamStatus, setSpamStatus] = useState(spam);
+	const [editContent, setEditContent] = useState(content);
+	const [replyValue, setReplyValue] = useState('');
 
 	const approveComment = () => {
 		comments
 			.comments()
-			.update( id, 'approve', item )
-			.then( response => {
-				if ( '1' == response.data.commentData.comment_approved ) {
-					setResponseMessage( {
-						message: __( 'Comment Approved!' ),
+			.update(id, 'approve', item)
+			.then((response) => {
+				if ('1' == response.data.commentData.comment_approved) {
+					setResponseMessage({
+						message: __('Comment Approved!'),
 						status: 'alert',
-						icon: Icon.Approve
-					} )
-					setApproveStatus( true )
-					item.approved = true
-					setCurrentHistoryState( { item } )
+						icon: Icon.Approve,
+					});
+					setApproveStatus(true);
+					item.approved = true;
+					setCurrentHistoryState({ item });
 				}
-			} )
-	}
+			});
+	};
 
 	const unapproveComment = () => {
 		comments
 			.comments()
-			.update( id, 'unapprove', item )
-			.then( response => {
-				if ( '0' == response.data.commentData.comment_approved ) {
-					setResponseMessage( {
-						message: __( 'Comment Un-Approved!' ),
+			.update(id, 'unapprove', item)
+			.then((response) => {
+				if ('0' == response.data.commentData.comment_approved) {
+					setResponseMessage({
+						message: __('Comment Un-Approved!'),
 						status: 'destructive',
-						icon: Icon.Reject
-					} )
-					setApproveStatus( false )
-					item.approved = false
-					setCurrentHistoryState( { item } )
+						icon: Icon.Reject,
+					});
+					setApproveStatus(false);
+					item.approved = false;
+					setCurrentHistoryState({ item });
 				}
-			} )
-	}
+			});
+	};
 
 	const spamComment = () => {
 		comments
 			.comments()
-			.update( id, 'spam', item )
-			.then( () => {
-				setResponseMessage( {
+			.update(id, 'spam', item)
+			.then(() => {
+				setResponseMessage({
 					message: 'Comment has been marked as spam!',
 					status: 'alert',
-					icon: Icon.Spam
-				} )
-				setSpamStatus( true )
-				item.spam = true
-				setCurrentHistoryState( { item } )
-			} )
-	}
+					icon: Icon.Spam,
+				});
+				setSpamStatus(true);
+				item.spam = true;
+				setCurrentHistoryState({ item });
+			});
+	};
 
 	const unspamComment = () => {
 		comments
 			.comments()
-			.update( id, 'unspam', item )
-			.then( () => {
-				setResponseMessage( {
+			.update(id, 'unspam', item)
+			.then(() => {
+				setResponseMessage({
 					message: 'Comment has been restored from spam!',
 					status: 'alert',
-					icon: Icon.Unspam
-				} )
-				setSpamStatus( false )
-				item.spam = false
-				setCurrentHistoryState( { item } )
-			} )
-	}
+					icon: Icon.Unspam,
+				});
+				setSpamStatus(false);
+				item.spam = false;
+				setCurrentHistoryState({ item });
+			});
+	};
 
 	const trashComment = () => {
 		comments
 			.comments()
-			.update( id, 'trash', item )
-			.then( response => {
-				if ( 'trash' == response.data.commentData.comment_approved ) {
-					setResponseMessage( {
-						message: __( 'Comment has been moved to trashed!' ),
+			.update(id, 'trash', item)
+			.then((response) => {
+				if ('trash' == response.data.commentData.comment_approved) {
+					setResponseMessage({
+						message: __('Comment has been moved to trashed!'),
 						status: 'destructive',
-						icon: Icon.Trash
-					} )
-					setTrashStatus( true )
-					item.trash = true
-					setCurrentHistoryState( { item } )
+						icon: Icon.Trash,
+					});
+					setTrashStatus(true);
+					item.trash = true;
+					setCurrentHistoryState({ item });
 				}
-			} )
-	}
+			});
+	};
 
 	const untrashComment = () => {
 		comments
 			.comments()
-			.update( id, 'untrash', item )
-			.then( () => {
-				setResponseMessage( {
-					message: __( 'Comment has been restored!' ),
+			.update(id, 'untrash', item)
+			.then(() => {
+				setResponseMessage({
+					message: __('Comment has been restored!'),
 					status: 'primary',
-					icon: Icon.Restore
-				} )
-				setTrashStatus( false )
-				item.trash = false
-				setCurrentHistoryState( { item } )
-			} )
-	}
+					icon: Icon.Restore,
+				});
+				setTrashStatus(false);
+				item.trash = false;
+				setCurrentHistoryState({ item });
+			});
+	};
 
-	const editComment = () => setCommentStatus( 'edit' )
+	const editComment = () => setCommentStatus('edit');
 
 	const updateContent = () => {
-		if ( '' === editContent ) {
-			alert( __( 'Please type a comment!' ) )
+		if ('' === editContent) {
+			alert(__('Please type a comment!'));
 		} else {
 			comments
 				.comments()
-				.update( id, 'content', { content: editContent } )
-				.then( () => {
-					setResponseMessage( {
-						message: __( 'Comment has been updated!' ),
+				.update(id, 'content', { content: editContent })
+				.then(() => {
+					setResponseMessage({
+						message: __('Comment has been updated!'),
 						status: 'primary',
-						icon: Icon.Update
-					} )
-					item.content = editContent
-					setCurrentHistoryState( { item } )
-					setCommentStatus( 'update' )
-
-				} )
+						icon: Icon.Update,
+					});
+					item.content = editContent;
+					setCurrentHistoryState({ item });
+					setCommentStatus('update');
+				});
 		}
-	}
+	};
 
 	const resetEdit = () => {
-		setCommentStatus( 'cancelEdit' )
-		setEditContent( content )
-	}
+		setCommentStatus('cancelEdit');
+		setEditContent(content);
+	};
 
 	const UpdateCommentBtn = () => {
 		return (
-			<RowBox style={ { justifyContent: 'space-between' } }>
-				<Button className='cmt-cncl-btn' onClick={ resetEdit }>
-					{__( 'Cancel' )}
+			<RowBox style={{ justifyContent: 'space-between' }}>
+				<Button className="cmt-cncl-btn" onClick={resetEdit}>
+					{__('Cancel')}
 				</Button>
 				<Button
-					className='fl-asst-cmt-updt-btn'
-					type='submit'
-					status='primary'
-					onClick={ updateContent }
+					className="fl-asst-cmt-updt-btn"
+					type="submit"
+					status="primary"
+					onClick={updateContent}
 				>
-					{__( 'Save' )}
+					{__('Save')}
 				</Button>
 			</RowBox>
-		)
-	}
+		);
+	};
 
-	const replyComment = () => setCommentStatus( 'reply' )
+	const replyComment = () => setCommentStatus('reply');
 
 	const replyCommentpost = () => {
-		if ( '' === replyValue ) {
-			alert( __( 'Please type a comment!' ) )
+		if ('' === replyValue) {
+			alert(__('Please type a comment!'));
 		} else {
-			const Rc = replyToComment( id, postId, replyValue, () => { } )
-			Rc.then( () => {
-				setCommentStatus( 'cancelReply' )
-				setResponseMessage( {
-					message: __( 'Reply Successfully posted!' ),
+			const Rc = replyToComment(id, postId, replyValue, () => {});
+			Rc.then(() => {
+				setCommentStatus('cancelReply');
+				setResponseMessage({
+					message: __('Reply Successfully posted!'),
 					status: 'primary',
-					icon: Icon.Reply
-				} )
-			} )
+					icon: Icon.Reply,
+				});
+			});
 		}
-	}
+	};
 
 	const resetReply = () => {
-		setCommentStatus( 'cancelReply' )
-	}
+		setCommentStatus('cancelReply');
+	};
 
 	const ReplyCommentBtn = () => {
 		return (
-			<RowBox style={ { justifyContent: 'space-between', paddingBottom: 10 } }>
-				<Button className='fl-asst-cmt-cncl-btn' onClick={ resetReply }>
-					{__( 'Cancel' )}
+			<RowBox style={{ justifyContent: 'space-between', paddingBottom: 10 }}>
+				<Button className="fl-asst-cmt-cncl-btn" onClick={resetReply}>
+					{__('Cancel')}
 				</Button>
 				<Button
-					className='fl-asst-cmt-updt-btn'
-					type='submit'
-					status='primary'
-					onClick={ replyCommentpost }
+					className="fl-asst-cmt-updt-btn"
+					type="submit"
+					status="primary"
+					onClick={replyCommentpost}
 				>
-					{__( 'Reply' )}
+					{__('Reply')}
 				</Button>
 			</RowBox>
-		)
-	}
+		);
+	};
 
-	const { renderForm } = Form.useForm( {
+	const { renderForm } = Form.useForm({
 		sections: {
 			details: {
-				label: __( 'Details' ),
+				label: __('Details'),
 				fields: {
 					authorEmail: {
-						label: __( 'Email Address' ),
+						label: __('Email Address'),
 						labelPlacement: 'beside',
 						type: 'text',
-						component: 'plain-text'
+						component: 'plain-text',
 					},
 					authorIP: {
-						label: __( 'IP Address' ),
+						label: __('IP Address'),
 						labelPlacement: 'beside',
 						type: 'text',
-						component: 'plain-text'
+						component: 'plain-text',
 					},
 					date: {
-						label: __( 'Submitted On' ),
+						label: __('Submitted On'),
 						labelPlacement: 'beside',
 						type: 'text',
-						component: 'plain-text'
-					}
-				}
+						component: 'plain-text',
+					},
+				},
 			},
 			actions: {
-				label: __( 'Actions' ),
+				label: __('Actions'),
 				fields: {
 					actions: {
 						component: 'actions',
 						options: [
 							{
-								label: __( 'View on Post' ),
+								label: __('View on Post'),
 								href: url,
-								disabled: trashStatus ? true : false
+								disabled: trashStatus ? true : false,
 							},
 							{
-								label: __( 'View in Admin' ),
-								href: editUrl
+								label: __('View in Admin'),
+								href: editUrl,
 							},
 							{
-								label: approveStatus ? __( 'Unapprove' ) : __( 'Approve' ),
+								label: approveStatus ? __('Unapprove') : __('Approve'),
 								onClick: approveStatus ? unapproveComment : approveComment,
-								disabled: ( trashStatus ? true : false ) || ( spamStatus ? true : false )
+								disabled: (trashStatus ? true : false) || (spamStatus ? true : false),
 							},
 							{
-								label: __( 'Mark as Spam' ),
+								label: __('Mark as Spam'),
 								onClick: spamComment,
-								disabled: ( trashStatus ? true : false ) || ( spamStatus ? true : false )
+								disabled: (trashStatus ? true : false) || (spamStatus ? true : false),
 							},
 							{
-								label: __( 'Reply' ),
+								label: __('Reply'),
 								onClick: replyComment,
-								disabled: ( trashStatus ? true : false ) || ( 'reply' === commentStatus ? true : false )
+								disabled:
+									(trashStatus ? true : false) || ('reply' === commentStatus ? true : false),
 							},
 							{
-								label: trashStatus ? __( 'Restore Comment' ) : __( 'Trash Comment' ),
+								label: trashStatus ? __('Restore Comment') : __('Trash Comment'),
 								onClick: trashStatus ? untrashComment : trashComment,
-								status: trashStatus ? 'primary' : 'destructive'
+								status: trashStatus ? 'primary' : 'destructive',
 							},
-						]
-					}
-				}
-			}
+						],
+					},
+				},
+			},
 		},
-		defaults: item
-	} )
+		defaults: item,
+	});
 
-	const showButtons = 'edit' !== commentStatus && 'reply' !== commentStatus
+	const showButtons = 'edit' !== commentStatus && 'reply' !== commentStatus;
 
 	return (
-		<Page
-			title={ __( 'Edit Comment' ) }
-			className="fl-asst-comment-details"
-		>
+		<Page title={__('Edit Comment')} className="fl-asst-comment-details">
 			<Text.Title>{author.name}</Text.Title>
-			<div style={ { padding: '20px 0' } }>
-				{ sprintf( 'Commented on %s', date ) }
-			</div>
+			<div style={{ padding: '20px 0' }}>{sprintf('Commented on %s', date)}</div>
 
-			{ 'edit' !== commentStatus && (
+			{'edit' !== commentStatus && (
 				<div
-					className='fl-asst-content-area'
-					dangerouslySetInnerHTML={ { __html: item.content } }
-					onClick={ () => setCommentStatus( 'edit' ) }
+					className="fl-asst-content-area"
+					dangerouslySetInnerHTML={{ __html: item.content }}
+					onClick={() => setCommentStatus('edit')}
 				/>
 			)}
-			{ 'edit' === commentStatus && (
-				<div style={ { paddingBottom: 10 } }>
-					<p className="fl-asst-edit-comment-title">{__( 'Edit Comment' )}</p>
+			{'edit' === commentStatus && (
+				<div style={{ paddingBottom: 10 }}>
+					<p className="fl-asst-edit-comment-title">{__('Edit Comment')}</p>
 					<textarea
 						className="fl-asst-comment-text"
-						value={ editContent }
-						onChange={ e => setEditContent( e.target.value ) }
-						rows={ 10 }
-						style={ { marginBottom: 10 } }
+						value={editContent}
+						onChange={(e) => setEditContent(e.target.value)}
+						rows={10}
+						style={{ marginBottom: 10 }}
 					/>
 					<UpdateCommentBtn />
 				</div>
-			) }
-			{ 'reply' === commentStatus && (
-				<div style={ { padding: '10px 0' } }>
-					<p className="fl-asst-edit-comment-title">{__( 'Reply To Comment' )}</p>
+			)}
+			{'reply' === commentStatus && (
+				<div style={{ padding: '10px 0' }}>
+					<p className="fl-asst-edit-comment-title">{__('Reply To Comment')}</p>
 					<textarea
 						className="fl-asst-comment-text"
-						value={ replyValue }
-						onChange={ e => setReplyValue( e.target.value ) }
-						rows={ 7 }
-						style={ { marginBottom: 10 } }
+						value={replyValue}
+						onChange={(e) => setReplyValue(e.target.value)}
+						rows={7}
+						style={{ marginBottom: 10 }}
 					/>
 					<ReplyCommentBtn />
 				</div>
-			) }
-			{ showButtons && (
+			)}
+			{showButtons && (
 				<RowBox
-					style={ {
+					style={{
 						justifyContent: 'space-evenly',
 						flex: '0 0 auto',
-						padding: '10px 0 20px'
-					} }
+						padding: '10px 0 20px',
+					}}
 				>
-					{ false === trashStatus &&
+					{false === trashStatus &&
 						false === spamStatus &&
 						false == approveStatus &&
-						( 'edit' !== commentStatus && 'reply' !== commentStatus ) && (
-						<Button
-							appearance='elevator'
-							title={ __( 'Approve' ) }
-							onClick={ approveComment }
-						>
-							<Icon.Approve />
-						</Button>
-					) }
+						'edit' !== commentStatus &&
+						'reply' !== commentStatus && (
+							<Button appearance="elevator" title={__('Approve')} onClick={approveComment}>
+								<Icon.Approve />
+							</Button>
+						)}
 
-					{ true === approveStatus && false === spamStatus && ( 'edit' !== commentStatus && 'reply' !== commentStatus ) && (
-						<Button
-							appearance='elevator'
-							status='alert'
-							title={ __( 'Reject' ) }
-							onClick={ unapproveComment }
-						>
-							<Icon.Reject />
-						</Button>
-					) }
-					{ false === trashStatus && false === spamStatus && ( 'edit' !== commentStatus && 'reply' !== commentStatus ) && (
-						<Button
-							appearance='elevator'
-							title={ __( 'Reply' ) }
-							onClick={ replyComment }
-						>
-							<Icon.Reply />
-						</Button>
-					) }
-					{ false === spamStatus && ( 'edit' !== commentStatus && 'reply' !== commentStatus ) && (
-						<Button
-							appearance='elevator'
-							status='alert'
-							title={ __( 'Spam' ) }
-							onClick={ spamComment }
-						>
+					{true === approveStatus &&
+						false === spamStatus &&
+						'edit' !== commentStatus &&
+						'reply' !== commentStatus && (
+							<Button
+								appearance="elevator"
+								status="alert"
+								title={__('Reject')}
+								onClick={unapproveComment}
+							>
+								<Icon.Reject />
+							</Button>
+						)}
+					{false === trashStatus &&
+						false === spamStatus &&
+						'edit' !== commentStatus &&
+						'reply' !== commentStatus && (
+							<Button appearance="elevator" title={__('Reply')} onClick={replyComment}>
+								<Icon.Reply />
+							</Button>
+						)}
+					{false === spamStatus && 'edit' !== commentStatus && 'reply' !== commentStatus && (
+						<Button appearance="elevator" status="alert" title={__('Spam')} onClick={spamComment}>
 							<Icon.Spam />
 						</Button>
-					) }
-					{ true === spamStatus && false === trashStatus && ( 'edit' !== commentStatus && 'reply' !== commentStatus ) && (
-						<Button
-							appearance='elevator'
-							status='primary'
-							title={ __( 'Unspam' ) }
-							onClick={ unspamComment }
-						>
-							<Icon.Unspam />
-						</Button>
-					) }
+					)}
+					{true === spamStatus &&
+						false === trashStatus &&
+						'edit' !== commentStatus &&
+						'reply' !== commentStatus && (
+							<Button
+								appearance="elevator"
+								status="primary"
+								title={__('Unspam')}
+								onClick={unspamComment}
+							>
+								<Icon.Unspam />
+							</Button>
+						)}
 
-					{ 'edit' !== commentStatus && ( 'edit' !== commentStatus && 'reply' !== commentStatus ) && (
-						<Button
-							appearance='elevator'
-							title={ __( 'Edit' ) }
-							onClick={ editComment }
-						>
+					{'edit' !== commentStatus && 'edit' !== commentStatus && 'reply' !== commentStatus && (
+						<Button appearance="elevator" title={__('Edit')} onClick={editComment}>
 							<Icon.Edit />
 						</Button>
 					)}
-					{ false === trashStatus && ( 'edit' !== commentStatus && 'reply' !== commentStatus ) && (
+					{false === trashStatus && 'edit' !== commentStatus && 'reply' !== commentStatus && (
 						<Button
-							appearance='elevator'
-							status='destructive'
-							title={ __( 'Trash' ) }
-							onClick={ trashComment }
+							appearance="elevator"
+							status="destructive"
+							title={__('Trash')}
+							onClick={trashComment}
 						>
 							<Icon.Trash />
 						</Button>
 					)}
-					{ true === trashStatus && ( 'edit' !== commentStatus && 'reply' !== commentStatus ) && (
+					{true === trashStatus && 'edit' !== commentStatus && 'reply' !== commentStatus && (
 						<Button
-							appearance='elevator'
-							status='primary'
-							title={ __( 'UnTrash' ) }
-							onClick={ untrashComment }
+							appearance="elevator"
+							status="primary"
+							title={__('UnTrash')}
+							onClick={untrashComment}
 						>
 							<Icon.Restore />
 						</Button>
 					)}
 				</RowBox>
-			) }
+			)}
 
-			{ responseMessage.message && (
-				<Layout.Message
-					status={ responseMessage.status }
-					icon={ responseMessage.icon }
-				>
+			{responseMessage.message && (
+				<Layout.Message status={responseMessage.status} icon={responseMessage.icon}>
 					{responseMessage.message}
 				</Layout.Message>
-			) }
+			)}
 
 			{renderForm()}
 		</Page>
-	)
-}
+	);
+};
 
-const RowBox = ( { style, padX = false, ...rest } ) => (
+const RowBox = ({ style, padX = false, ...rest }) => (
 	<div
-		style={ {
+		style={{
 			display: 'flex',
 			paddingLeft: padX ? 20 : null,
 			paddingRight: padX ? 20 : null,
 			...style,
-		} }
-		{ ...rest }
+		}}
+		{...rest}
 	/>
-)
+);

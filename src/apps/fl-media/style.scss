@@ -1,24 +1,25 @@
 .fl-asst {
-    .fl-asst-recent-media-display {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 6px;
-        padding: 4px var(--fluid-med-space) var(--fluid-lg-space);
+	.fl-asst-recent-media-display {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-gap: 6px;
+		padding: 4px var(--fluid-med-space) var(--fluid-lg-space);
 
-        a {
-            border-radius: 0;
+		a {
+			border-radius: 0;
 
-            &:focus {
-                outline: none;
+			&:focus {
+				outline: none;
 
-                img {
-                    border-radius: 5px;
-                    box-shadow: 0px 0px 0px 2px var(--fluid-background),
-								0px 0px 0px 4px var(--fluid-accent);
-                }
-            }
-        }
-    }
+				img {
+					border-radius: 5px;
+					box-shadow:
+						0px 0px 0px 2px var(--fluid-background),
+						0px 0px 0px 4px var(--fluid-accent);
+				}
+			}
+		}
+	}
 
 	#fl-asst-media-list-page {
 		.fluid-page-header {
@@ -27,27 +28,27 @@
 		}
 	}
 
-    .fl-asst-list.fl-asst-grid-list {
+	.fl-asst-list.fl-asst-grid-list {
+		--spacing: clamp(10px, 4%, 40px);
+		display: grid;
+		grid-gap: var(--spacing);
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		padding: var(--spacing);
 
-        --spacing: clamp( 10px, 4%, 40px );
-        display: grid;
-        grid-gap: var(--spacing);
-        grid-template-columns: repeat( auto-fit, minmax( 150px, 1fr ) );
-        padding: var(--spacing);
+		.fl-asst-grid-list-item {
+			width: 100%;
+			border: none;
+			border-radius: var(--fluid-radius);
 
-        .fl-asst-grid-list-item {
-            width: 100%;
-            border: none;
-            border-radius: var(--fluid-radius);
+			&:focus {
+				box-shadow:
+					0px 0px 0px 2px var(--fluid-background),
+					0px 0px 0px 4px var(--fluid-accent);
+			}
 
-            &:focus {
-                box-shadow: 0px 0px 0px 2px var(--fluid-background),
-                            0px 0px 0px 4px var(--fluid-accent);
-            }
-
-            img {
-                width: 100%;
-            }
-        }
-    }
+			img {
+				width: 100%;
+			}
+		}
+	}
 }

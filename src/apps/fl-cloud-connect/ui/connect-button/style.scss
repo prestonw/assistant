@@ -1,25 +1,25 @@
 .fluid {
-    .fluid-button.fl-asst-connect-button {
+	.fluid-button.fl-asst-connect-button {
 		--fluid-accent: var(--fl-brand-red);
-        --background: var(--fl-brand-red);
-        --color: white;
-        padding: 0 30px !important;
-        transition-property: none;
+		--background: var(--fl-brand-red);
+		--color: white;
+		padding: 0 30px !important;
+		transition-property: none;
 
-        &:hover {
+		&:hover {
 			--color: white;
-			--background: var(--fl-brand-red) ;
-			background-color: var(--background)!important;
+			--background: var(--fl-brand-red);
+			background-color: var(--background) !important;
 			color: var(--color) !important;
-			filter: brightness(.95);
-            transform: scale(1); // cancel out scaling effect
-        }
+			filter: brightness(0.95);
+			transform: scale(1); // cancel out scaling effect
+		}
 		&:focus {
 			color: white;
 			background-color: var(--fl-brand-red);
 			transform: scale(1); // cancel out scaling effect
 		}
-    }
+	}
 	.fluid-color-scheme-dark {
 		.fluid-button.fl-asst-connect-button {
 			--fluid-accent: var(--fl-brand-red);
@@ -28,8 +28,8 @@
 
 			&:hover {
 				--color: white;
-				--background: var(--fl-brand-red) ;
-				background-color: var(--background)!important;
+				--background: var(--fl-brand-red);
+				background-color: var(--background) !important;
 				color: var(--color) !important;
 			}
 			&:focus {

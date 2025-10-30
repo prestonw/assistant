@@ -1,1 +1,1 @@
-import './beaver-builder'
+import './beaver-builder';

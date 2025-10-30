@@ -1,16 +1,11 @@
-import {
-	registerStore,
-	useStore,
-	getStore,
-	getDispatch
-} from '../registry'
+import { registerStore, useStore, getStore, getDispatch } from '../registry';
 
-import * as actions from './actions'
-import * as reducers from './reducers'
-import * as effects from './effects'
-import * as selectors from './selectors'
+import * as actions from './actions';
+import * as reducers from './reducers';
+import * as effects from './effects';
+import * as selectors from './selectors';
 
-const KEY = 'fl-assistant/widgets'
+const KEY = 'fl-assistant/widgets';
 
 const defaultLayout = [
 	{
@@ -22,50 +17,50 @@ const defaultLayout = [
 		id: 3,
 		size: 'sm',
 		type: 'media',
-		settings: {}
+		settings: {},
 	},
 	{
 		id: 4,
 		size: 'lg',
 		type: 'currently-viewing',
-		settings: {}
+		settings: {},
 	},
 	{
 		id: 5,
 		size: 'lg',
 		type: 'recent-posts',
-		settings: {}
+		settings: {},
 	},
 	{
 		id: 7,
 		size: 'lg',
-		type: 'apps'
+		type: 'apps',
 	},
 	{
 		id: 6,
 		size: 'lg',
-		type: 'asst-email-signup'
-	}
-]
+		type: 'asst-email-signup',
+	},
+];
 
-registerStore( KEY, {
+registerStore(KEY, {
 	state: {
 		types: {},
 		layouts: {
-			default: [ ...defaultLayout ],
-			home: [ ...defaultLayout ],
-		}
+			default: [...defaultLayout],
+			home: [...defaultLayout],
+		},
 	},
 	actions,
 	reducers,
 	effects,
 	selectors,
-} )
+});
 
-export const getWidgetStore = () => getStore( KEY )
+export const getWidgetStore = () => getStore(KEY);
 
-export const useWidgetState = shouldUpdate => useStore( KEY, shouldUpdate )
+export const useWidgetState = (shouldUpdate) => useStore(KEY, shouldUpdate);
 
-export const getWidgetState = () => getStore( KEY ).getState()
+export const getWidgetState = () => getStore(KEY).getState();
 
-export const getWidgetActions = () => getDispatch( KEY )
+export const getWidgetActions = () => getDispatch(KEY);

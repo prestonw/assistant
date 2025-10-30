@@ -1,14 +1,6 @@
-import React from 'react'
-import { Control } from 'ui'
+import React from 'react';
+import { Control } from 'ui';
 
-export const UrlItem = ( {
-	id,
-	value,
-} ) => {
-	return (
-		<Control.URL
-			id={ id }
-			value={ value }
-		/>
-	)
-}
+export const UrlItem = ({ id, value }) => {
+	return <Control.URL id={id} value={value} />;
+};

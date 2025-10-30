@@ -1,6 +1,6 @@
-import { Page } from 'assistant/ui'
-import Main from './main'
+import { Page } from 'assistant/ui';
+import Main from './main';
 
-const Comment = Page.Comment
+const Comment = Page.Comment;
 
-export { Main, Comment }
+export { Main, Comment };

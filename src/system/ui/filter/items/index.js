@@ -1,94 +1,88 @@
-import React from 'react'
-import { __ } from '@wordpress/i18n'
-import { getSystemHooks } from 'data'
-import Filter from '../'
+import React from 'react';
+import { __ } from '@wordpress/i18n';
+import { getSystemHooks } from 'data';
+import Filter from '../';
 
-export const RadioGroupItem = ( { items = {}, title, value, defaultValue, onChange = () => {} } ) => {
+export const RadioGroupItem = ({ items = {}, title, value, defaultValue, onChange = () => {} }) => {
 	return (
 		<Filter.Item
-			title={ title }
-			subtitle={ items[value] }
-			isChanged={ value !== defaultValue }
-			hasLoadedItems={ 0 !== Object.keys( items ).length }
+			title={title}
+			subtitle={items[value]}
+			isChanged={value !== defaultValue}
+			hasLoadedItems={0 !== Object.keys(items).length}
 		>
-			{Object.entries( items ).map( ( [ key, label ], i ) => {
+			{Object.entries(items).map(([key, label], i) => {
 				return (
-					<label key={ i }>
+					<label key={i}>
 						<input
 							type="radio"
-							value={ key }
-							onChange={ e => onChange( key, e ) }
-							checked={ value === key }
-						/>{label}{ defaultValue === key && (
-							<em style={ { marginLeft: 'var(--fluid-sm-space)' } }>
-								({ __( 'Default' )})
-							</em>
-						) }
+							value={key}
+							onChange={(e) => onChange(key, e)}
+							checked={value === key}
+						/>
+						{label}
+						{defaultValue === key && (
+							<em style={{ marginLeft: 'var(--fluid-sm-space)' }}>({__('Default')})</em>
+						)}
 					</label>
-				)
-			} )}
+				);
+			})}
 		</Filter.Item>
-	)
-}
+	);
+};
 
-export const LabelsItem = ( { ...rest } ) => {
-	const { useLabels } = getSystemHooks()
-	const [ labels ] = useLabels()
+export const LabelsItem = ({ ...rest }) => {
+	const { useLabels } = getSystemHooks();
+	const [labels] = useLabels();
 
-	const Dot = ( { color, outline, ...rest } ) => {
+	const Dot = ({ color, outline, ...rest }) => {
 		return (
 			<span
-				{ ...rest }
-				style={ {
+				{...rest}
+				style={{
 					display: 'inline-block',
 					width: 10,
 					height: 10,
 					backgroundColor: color ? color : 'transparent',
 					border: outline ? `2px solid ${outline}` : 'none',
 					borderRadius: '50%',
-					marginRight: 'var(--fluid-sm-space)'
-				} }
+					marginRight: 'var(--fluid-sm-space)',
+				}}
 			/>
-		)
-	}
+		);
+	};
 	const items = {
 		0: (
 			<>
 				<Dot outline="var(--fluid-blue-7)" />
-				{__( 'Any' )}
+				{__('Any')}
 			</>
-		)
-	}
+		),
+	};
 
-	for ( let key in labels ) {
-		const { id, color, label } = labels[ key ]
-		items[ id ] = (
+	for (let key in labels) {
+		const { id, color, label } = labels[key];
+		items[id] = (
 			<>
-				<Dot color={ color } />
+				<Dot color={color} />
 				{label}
 			</>
-		)
+		);
 	}
 
-	return (
-		<RadioGroupItem
-			title={ __( 'Label' ) }
-			items={ items }
-			{ ...rest }
-		/>
-	)
-}
+	return <RadioGroupItem title={__('Label')} items={items} {...rest} />;
+};
 
-export const TextInputItem = ( { title, value, onChange = () => {}, placeholder, ...rest } ) => {
+export const TextInputItem = ({ title, value, onChange = () => {}, placeholder, ...rest }) => {
 	return (
-		<li className="fl-asst-filter-item" { ...rest }>
+		<li className="fl-asst-filter-item" {...rest}>
 			<input
 				type="text"
-				value={ value }
-				onChange={ e => onChange( e.target.value, e ) }
-				title={ title }
-				placeholder={ placeholder }
+				value={value}
+				onChange={(e) => onChange(e.target.value, e)}
+				title={title}
+				placeholder={placeholder}
 			/>
 		</li>
-	)
-}
+	);
+};

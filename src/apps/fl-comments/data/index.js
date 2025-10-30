@@ -1,17 +1,17 @@
-import { __ } from '@wordpress/i18n'
+import { __ } from '@wordpress/i18n';
 
 export const defaultState = {
 	type: 'hold',
-}
+};
 
-export const cache = [ 'type' ]
+export const cache = ['type'];
 
-export const defaultStatus = 'hold'
+export const defaultStatus = 'hold';
 
 export const statuses = {
-	all: __( 'All' ),
-	hold: __( 'Pending ' ),
-	approve: __( 'Approved' ),
-	spam: __( 'Spam' ),
-	trash: __( 'Trashed' ),
-}
+	all: __('All'),
+	hold: __('Pending '),
+	approve: __('Approved'),
+	spam: __('Spam'),
+	trash: __('Trashed'),
+};

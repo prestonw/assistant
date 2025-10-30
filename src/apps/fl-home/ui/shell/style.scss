@@ -24,7 +24,8 @@
 						display: flex;
 						flex-direction: row;
 
-						a, button {
+						a,
+						button {
 							flex: 1 1 auto;
 
 							&.is-selected {
@@ -64,7 +65,7 @@
 
 	.fluid-frame-size-medium {
 		.fluid-page.fl-asst-home-shell {
-			grid-template-columns: minmax( 140px, 200px ) minmax( 400px, 1fr );
+			grid-template-columns: minmax(140px, 200px) minmax(400px, 1fr);
 
 			.fl-asst-home-shell-sidebar {
 				display: block;
@@ -82,7 +83,7 @@
 	.fluid-color-scheme-dark {
 		.fluid-page.fl-asst-home-shell {
 			.fl-asst-home-shell-sidebar {
-				background: hsl( var(--fluid-hue), 10%, 12% );
+				background: hsl(var(--fluid-hue), 10%, 12%);
 			}
 		}
 	}
@@ -92,7 +93,7 @@
 	.fl-asst {
 		.fluid-page.fl-asst-home-shell {
 			.fl-asst-home-shell-sidebar {
-				background: hsl( var(--fluid-hue), 10%, 12% );
+				background: hsl(var(--fluid-hue), 10%, 12%);
 			}
 		}
 	}

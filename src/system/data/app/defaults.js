@@ -1,8 +1,7 @@
+export const defaultState = {};
 
-export const defaultState = {}
+export const defaultActions = {};
 
-export const defaultActions = {}
+export const defaultReducers = {};
 
-export const defaultReducers = {}
-
-export const defaultEffects = {}
+export const defaultEffects = {};

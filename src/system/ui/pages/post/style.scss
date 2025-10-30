@@ -1,11 +1,11 @@
 .fl-asst {
-	label[for=post_feature_image] {
+	label[for='post_feature_image'] {
 		text-align: center;
-	    float: left;
-	    width: 100%;
-	    display: block;
-	    padding: 10px;
-	    background: var(--fluid-box-background);
+		float: left;
+		width: 100%;
+		display: block;
+		padding: 10px;
+		background: var(--fluid-box-background);
 	}
 
 	#post_feature_image {
@@ -25,14 +25,14 @@
 		padding-bottom: 70px; /* account for publish footer */
 	}
 	#fl-asst-post-detail ~ .fluid-page-footer {
-        border: none;
+		border: none;
 	}
-	.fl-asst-lock-view .fl-asst-form{
+	.fl-asst-lock-view .fl-asst-form {
 		pointer-events: none;
 		opacity: 0.2;
 	}
 }
 
-.media-modal{
+.media-modal {
 	z-index: 9999999999;
 }

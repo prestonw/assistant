@@ -1,8 +1,8 @@
-import { Layout as FLUID_Layout } from '@beaverbuilder/fluid'
-import Attention from './attention'
-import PublishBar from './publish-bar'
-import Table from './table'
-import { Tabs, TabsToolbar, CurrentTab } from './nav'
+import { Layout as FLUID_Layout } from '@beaverbuilder/fluid';
+import Attention from './attention';
+import PublishBar from './publish-bar';
+import Table from './table';
+import { Tabs, TabsToolbar, CurrentTab } from './nav';
 
 const Layout = {
 	...FLUID_Layout,
@@ -11,7 +11,7 @@ const Layout = {
 	Table,
 	Tabs,
 	TabsToolbar,
-	CurrentTab
-}
+	CurrentTab,
+};
 
-export default Layout
+export default Layout;

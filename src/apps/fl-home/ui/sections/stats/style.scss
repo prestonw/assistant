@@ -6,10 +6,9 @@
 		--subtitle-color: var(--fluid-opaque-6);
 
 		.fl-asst-swiper-scroller {
-
 			/* Create space for box shadow - extra pixel #causebrowsers... */
-			padding-top: calc( var(--stroke-weight) + 1px );
-			padding-bottom: calc( var(--stroke-weight) + 1px );
+			padding-top: calc(var(--stroke-weight) + 1px);
+			padding-bottom: calc(var(--stroke-weight) + 1px);
 
 			.fl-asst-swiper-item {
 				width: auto;
@@ -44,7 +43,7 @@
 			font-size: 12px;
 
 			.home-stat-total {
-				font-size:2em;
+				font-size: 2em;
 			}
 			.home-stat-label {
 				font-size: 1em;
@@ -69,7 +68,7 @@
 				color: var(--subtitle-color);
 
 				svg {
-					margin-right: .5em;
+					margin-right: 0.5em;
 				}
 			}
 			.home-currently-viewing-title {
@@ -96,7 +95,6 @@
 			align-items: flex-start;
 			border-radius: 0;
 
-
 			&:hover {
 				text-decoration: none;
 				background-color: var(--fluid-box-background);
@@ -118,7 +116,7 @@
 					flex: 0 0 100px;
 					width: 100px;
 					margin-right: 20px;
-					filter: brightness( 0.98 );
+					filter: brightness(0.98);
 				}
 				.theme-meta {
 					flex: 1 1 auto;
@@ -143,13 +141,11 @@
 			}
 		}
 	}
-
 }
 
 .fluid-color-scheme-dark {
 	.home-stats-section {
 		--divider-color: var(--fluid-opaque-0);
 		--subtitle-color: var(--fluid-opaque-8);
-
 	}
 }

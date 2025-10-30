@@ -1,19 +1,19 @@
-import * as FLUID_Icon from '@beaverbuilder/icons'
-import Dashboard from './dashboard'
-import Document from './document'
-import DownCaretSmall from './down-caret-small'
-import DragHandle from './drag-handle'
-import Safely from './safely'
-import Video from './video'
-import PencilOutline from './pencil-outline'
-import LockClosed from './lock-closed'
-import LockOpen from './lock-open'
-import WordPress from './wordpress'
-import Upload from './upload'
-import Download from './download'
+import * as FLUID_Icon from '@beaverbuilder/icons';
+import Dashboard from './dashboard';
+import Document from './document';
+import DownCaretSmall from './down-caret-small';
+import DragHandle from './drag-handle';
+import Safely from './safely';
+import Video from './video';
+import PencilOutline from './pencil-outline';
+import LockClosed from './lock-closed';
+import LockOpen from './lock-open';
+import WordPress from './wordpress';
+import Upload from './upload';
+import Download from './download';
 
 // ArrowRight - Temp fix util I fix it in @beaverbuilder/icons
-import ArrowRight from './arrow-right-fix'
+import ArrowRight from './arrow-right-fix';
 
 const Icon = {
 	...FLUID_Icon,
@@ -30,6 +30,6 @@ const Icon = {
 	WordPress, // moved to icons package
 	Upload,
 	Download,
-}
+};
 
-export default Icon
+export default Icon;

@@ -1,26 +1,30 @@
-import React from 'react'
-import c from 'classnames'
-import WidgetLayout from './layout'
-import WidgetLibrary from './library'
-import './style.scss'
+import React from 'react';
+import c from 'classnames';
+import WidgetLayout from './layout';
+import WidgetLibrary from './library';
+import './style.scss';
 
-const Widget = ( { title, children, size, type, className, showTitle = false, ...rest } ) => {
+const Widget = ({ title, children, size, type, className, showTitle = false, ...rest }) => {
 	return (
 		<div
-			className={ c( 'fluid-widget', {
-				[`fluid-widget-size-${size}`]: size,
-				[`fluid-widget-type-${type}`]: type,
-				[`fl-asst-widget-type-${type}`]: type,
-			}, className ) }
-			{ ...rest }
+			className={c(
+				'fluid-widget',
+				{
+					[`fluid-widget-size-${size}`]: size,
+					[`fluid-widget-type-${type}`]: type,
+					[`fl-asst-widget-type-${type}`]: type,
+				},
+				className,
+			)}
+			{...rest}
 		>
-			{ showTitle && <div className="fluid-widget-title">{title}</div> }
+			{showTitle && <div className="fluid-widget-title">{title}</div>}
 			<div className="fluid-widget-content">{children}</div>
 		</div>
-	)
-}
+	);
+};
 
-Widget.Layout = WidgetLayout
-Widget.Library = WidgetLibrary
+Widget.Layout = WidgetLayout;
+Widget.Library = WidgetLibrary;
 
-export default Widget
+export default Widget;

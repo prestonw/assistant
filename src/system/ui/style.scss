@@ -1,13 +1,12 @@
 .fl-asst {
-
 	// Known Colors
-	--fl-asst-red: #FF5335;
-	--fl-asst-blue: #1BADF8;
-	--fl-asst-green: #02C278;
-	--fl-asst-yellow: #FFD000;
-	--fl-asst-orange: #FF9500;
-	--fl-asst-purple: #CC73E1;
-	--fl-asst-pink: #FF2968;
+	--fl-asst-red: #ff5335;
+	--fl-asst-blue: #1badf8;
+	--fl-asst-green: #02c278;
+	--fl-asst-yellow: #ffd000;
+	--fl-asst-orange: #ff9500;
+	--fl-asst-purple: #cc73e1;
+	--fl-asst-pink: #ff2968;
 }
 
 /* Checkbox fix - should move to fluid */
@@ -23,8 +22,8 @@
 		}
 	}
 
-	input[type=checkbox],
-	input[type=radio] {
+	input[type='checkbox'],
+	input[type='radio'] {
 		padding: 0;
 
 		&:focus {

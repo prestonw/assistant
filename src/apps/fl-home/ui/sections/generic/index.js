@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import c from 'classnames'
-import { Icon, Button } from 'assistant/ui'
-import Swiper from './swiper'
-import './style.scss'
+import React, { useState, useEffect } from 'react';
+import c from 'classnames';
+import { Icon, Button } from 'assistant/ui';
+import Swiper from './swiper';
+import './style.scss';
 
-const Section = ( {
+const Section = ({
 	tag: Tag = 'div',
 	headerComponent: Header = SectionHeader,
 	title,
@@ -19,77 +19,79 @@ const Section = ( {
 	footer,
 	onToggle = () => {},
 	...rest
-} ) => {
-	const [ showContent, setShowContent ] = useState( ! isCollapsed )
+}) => {
+	const [showContent, setShowContent] = useState(!isCollapsed);
 
 	// Handle external prop control
-	useEffect( () => {
-		if ( showContent === isCollapsed ) {
-			setShowContent( ! isCollapsed )
+	useEffect(() => {
+		if (showContent === isCollapsed) {
+			setShowContent(!isCollapsed);
 		}
-	}, [ isCollapsed ] )
+	}, [isCollapsed]);
 
-	const classes = c( 'fl-asst-feature-section', {
-		'pad-content': padContent
-	}, className )
+	const classes = c(
+		'fl-asst-feature-section',
+		{
+			'pad-content': padContent,
+		},
+		className,
+	);
 
 	return (
-		<Tag className={ classes } { ...rest } >
-			{ showHeader && (
+		<Tag className={classes} {...rest}>
+			{showHeader && (
 				<Header
-					title={ title }
-					showCaret={ canCollapse }
-					isExpanded={ showContent }
-					toggleExpanded={ () => {
-						if ( canCollapse ) {
-							const newValue = ! showContent
-							setShowContent( newValue )
-							onToggle( newValue )
+					title={title}
+					showCaret={canCollapse}
+					isExpanded={showContent}
+					toggleExpanded={() => {
+						if (canCollapse) {
+							const newValue = !showContent;
+							setShowContent(newValue);
+							onToggle(newValue);
 						}
-					} }
-					actions={ headerActions }
+					}}
+					actions={headerActions}
 				/>
-			) }
-			{ showContent && (
+			)}
+			{showContent && (
 				<>
-					{ description && <div className="section-description">{ description }</div> }
-					<div className="section-content">
-						{ children }
-					</div>
-					{ footer && <div className="section-footer">{ footer }</div> }
+					{description && <div className="section-description">{description}</div>}
+					<div className="section-content">{children}</div>
+					{footer && <div className="section-footer">{footer}</div>}
 				</>
-			) }
+			)}
 		</Tag>
-	)
-}
+	);
+};
 
-const SectionHeader = ( {
+const SectionHeader = ({
 	title,
 	showCaret = false,
 	isExpanded = true,
 	toggleExpanded = () => {},
 	actions,
 	...rest
-} ) => {
+}) => {
 	return (
-		<div className="fl-asst-feature-section-header" { ...rest }>
+		<div className="fl-asst-feature-section-header" {...rest}>
 			<div className="gutter-space">
-				{ showCaret && (
+				{showCaret && (
 					<Button
-						onClick={ toggleExpanded }
-						icon={ isExpanded ? <Icon.CaretDown /> : <Icon.CaretRight /> }
+						onClick={toggleExpanded}
+						icon={isExpanded ? <Icon.CaretDown /> : <Icon.CaretRight />}
 						appearance="transparent"
 						size="sm"
 						shape="round"
 					/>
-				) }
+				)}
 			</div>
 			<div className="title-text">{title}</div>
-			{ actions && <div className="header-actions">{ actions }</div>}
+			{actions && <div className="header-actions">{actions}</div>}
 		</div>
-	)
-}
+	);
+};
 
-export { Swiper }
+export { Swiper };
 
-export default Section
+export default Section;

@@ -1,208 +1,213 @@
-import React from 'react'
-import { __ } from '@wordpress/i18n'
-import { List, Page, Layout, Filter } from 'assistant/ui'
-import { useAppState, getAppActions, getSystemSelectors, getSystemConfig } from 'assistant/data'
-import { addFilter } from '@wordpress/hooks'
-import { defaultState } from '../'
+import React from 'react';
+import { __ } from '@wordpress/i18n';
+import { List, Page, Layout, Filter } from 'assistant/ui';
+import { useAppState, getAppActions, getSystemSelectors, getSystemConfig } from 'assistant/data';
+import { addFilter } from '@wordpress/hooks';
+import { defaultState } from '../';
 
 export const SummaryTab = () => {
-	const handle = 'fl-content'
-	const { getCount } = getSystemSelectors()
-	const { contentTypes } = getSystemConfig()
+	const handle = 'fl-content';
+	const { getCount } = getSystemSelectors();
+	const { contentTypes } = getSystemConfig();
 	return (
 		<>
 			<Page.Section>
-
-				<div style={ {
-					display: 'grid',
-					gridTemplateColumns: 'repeat(3, 1fr)',
-					gap: 5
-				} }>
-					{ Object.entries( contentTypes ).map( ( [ key, item ], i ) => {
-						const { labels } = item
+				<div
+					style={{
+						display: 'grid',
+						gridTemplateColumns: 'repeat(3, 1fr)',
+						gap: 5,
+					}}
+				>
+					{Object.entries(contentTypes).map(([key, item], i) => {
+						const { labels } = item;
 						return (
-							<div key={ i } style={ {
-								display: 'flex',
-								flexDirection: 'column',
-								background: 'var(--fluid-primary-background)',
-								color: 'var(--fluid-primary-color)',
-								borderRadius: 'var(--fluid-sm-space)',
-								padding: 'var(--fluid-med-space)'
-							} }>
+							<div
+								key={i}
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									background: 'var(--fluid-primary-background)',
+									color: 'var(--fluid-primary-color)',
+									borderRadius: 'var(--fluid-sm-space)',
+									padding: 'var(--fluid-med-space)',
+								}}
+							>
 								{labels.plural}
-								<span style={ { fontSize: 24, marginTop: 5, lineHeight: 1 } }>{getCount( `content/${key}` )}</span>
+								<span style={{ fontSize: 24, marginTop: 5, lineHeight: 1 }}>
+									{getCount(`content/${key}`)}
+								</span>
 							</div>
-						)
-					} )}
+						);
+					})}
 				</div>
-
 			</Page.Section>
 
-			<Page.Section label={ __( 'Latest Posts' ) } padX={ false }>
+			<Page.Section label={__('Latest Posts')} padX={false}>
 				<List.Posts
-					query={ {
+					query={{
 						post_type: 'post',
-						posts_per_page: 5
-					} }
-					paginate={ false }
-					getItemProps={ ( item, defaultProps ) => {
-						if ( item.id ) {
+						posts_per_page: 5,
+					}}
+					paginate={false}
+					getItemProps={(item, defaultProps) => {
+						if (item.id) {
 							return {
 								...defaultProps,
 								description: null,
 								thumbnailSize: 'sm',
 								to: {
 									pathname: `/${handle}/post/${item.id}`,
-									state: { item }
+									state: { item },
 								},
-							}
+							};
 						}
-						return defaultProps
-					} }
+						return defaultProps;
+					}}
 				/>
 			</Page.Section>
 		</>
-	)
-}
+	);
+};
 
-export const PostTypeTab = ( { type = 'post' } ) => {
-	const handle = 'fl-content'
-	const { query, listStyle } = useAppState( handle )
-	const { setQuery, setListStyle } = getAppActions( handle )
+export const PostTypeTab = ({ type = 'post' }) => {
+	const handle = 'fl-content';
+	const { query, listStyle } = useAppState(handle);
+	const { setQuery, setListStyle } = getAppActions(handle);
 
-	const defaultQuery = defaultState.query
+	const defaultQuery = defaultState.query;
 
 	const style = {
 		maxHeight: '100%',
 		minHeight: 0,
 		flex: '1 1 auto',
-	}
+	};
 
 	const BeforeContent = () => {
-
 		const sorts = {
-			title: __( 'Title' ),
-			author: __( 'Author' ),
-			ID: __( 'Post ID' ),
-			date: __( 'Date Created' ),
-			modified: __( 'Date Modified' )
-		}
+			title: __('Title'),
+			author: __('Author'),
+			ID: __('Post ID'),
+			date: __('Date Created'),
+			modified: __('Date Modified'),
+		};
 
 		const statuses = {
-			any: __( 'Any' ),
-			publish: __( 'Published' ),
-			draft: __( 'Drafted' ),
-			pending: __( 'Pending' ),
-			future: __( 'Scheduled' ),
-			private: __( 'Private' ),
-			trash: __( 'Trashed' ),
-		}
+			any: __('Any'),
+			publish: __('Published'),
+			draft: __('Drafted'),
+			pending: __('Pending'),
+			future: __('Scheduled'),
+			private: __('Private'),
+			trash: __('Trashed'),
+		};
 
 		const orders = {
-			ASC: __( 'Ascending' ),
-			DESC: __( 'Descending' )
-		}
+			ASC: __('Ascending'),
+			DESC: __('Descending'),
+		};
 
 		const displays = {
-			'': __( 'List' ),
-			'thumb': __( 'Post Thumbnails' )
-		}
+			'': __('List'),
+			thumb: __('Post Thumbnails'),
+		};
 
 		return (
 			<>
 				<Filter>
 					<Filter.RadioGroupItem
-						title={ __( 'Status' ) }
-						items={ statuses }
-						value={ query.post_status }
-						defaultValue={ defaultQuery.post_status }
-						onChange={ value => setQuery( { ...query, post_status: value } ) }
+						title={__('Status')}
+						items={statuses}
+						value={query.post_status}
+						defaultValue={defaultQuery.post_status}
+						onChange={(value) => setQuery({ ...query, post_status: value })}
 					/>
 					<Filter.LabelsItem
-						value={ query.label }
-						defaultValue={ defaultQuery.label }
-						onChange={ value => setQuery( { ...query, label: value } ) }
+						value={query.label}
+						defaultValue={defaultQuery.label}
+						onChange={(value) => setQuery({ ...query, label: value })}
 					/>
 					<Filter.RadioGroupItem
-						title={ __( 'Display As' ) }
-						items={ displays }
-						value={ listStyle }
-						defaultValue={ defaultState.listStyle }
-						onChange={ value => setListStyle( value ) }
+						title={__('Display As')}
+						items={displays}
+						value={listStyle}
+						defaultValue={defaultState.listStyle}
+						onChange={(value) => setListStyle(value)}
 					/>
 					<Filter.RadioGroupItem
-						title={ __( 'Sort By' ) }
-						items={ sorts }
-						value={ query.orderby }
-						defaultValue={ defaultQuery.orderby }
-						onChange={ value => setQuery( { ...query, orderby: value } ) }
+						title={__('Sort By')}
+						items={sorts}
+						value={query.orderby}
+						defaultValue={defaultQuery.orderby}
+						onChange={(value) => setQuery({ ...query, orderby: value })}
 					/>
 					<Filter.RadioGroupItem
-						title={ __( 'Order' ) }
-						items={ orders }
-						value={ query.order }
-						defaultValue={ defaultState.query.order }
-						onChange={ value => setQuery( { ...query, order: value } ) }
+						title={__('Order')}
+						items={orders}
+						value={query.order}
+						defaultValue={defaultState.query.order}
+						onChange={(value) => setQuery({ ...query, order: value })}
 					/>
-					<Filter.Button onClick={ () => setQuery( defaultQuery ) }>{__( 'Reset Filter' )}</Filter.Button>
+					<Filter.Button onClick={() => setQuery(defaultQuery)}>{__('Reset Filter')}</Filter.Button>
 				</Filter>
 
-				{ ! type.startsWith( 'wp_template' ) &&
+				{!type.startsWith('wp_template') && (
 					<List.InlineCreate
-						postType={ type }
-						onPostCreated={ () => setQuery( {
-							...defaultState.query,
-							order: 'DESC',
-							orderby: 'ID',
-							key: new Date().getTime()
-						} ) }
+						postType={type}
+						onPostCreated={() =>
+							setQuery({
+								...defaultState.query,
+								order: 'DESC',
+								orderby: 'ID',
+								key: new Date().getTime(),
+							})
+						}
 					/>
-				}
+				)}
 			</>
-		)
-	}
+		);
+	};
 
 	return (
-		<Layout.Box outset={ true } padY={ false } style={ style }>
+		<Layout.Box outset={true} padY={false} style={style}>
 			<List.Posts
-				query={ { ...query, post_type: type } }
-				listStyle={ listStyle }
-				getItemProps={ ( item, defaultProps ) => {
-					if ( item.id ) {
+				query={{ ...query, post_type: type }}
+				listStyle={listStyle}
+				getItemProps={(item, defaultProps) => {
+					if (item.id) {
 						return {
 							...defaultProps,
 							to: {
 								pathname: `/${handle}/post/${item.id}`,
-								state: { item }
+								state: { item },
 							},
-						}
+						};
 					}
-					return defaultProps
-				} }
-				before={ <BeforeContent /> }
+					return defaultProps;
+				}}
+				before={<BeforeContent />}
 			/>
 		</Layout.Box>
-	)
-}
+	);
+};
 
-addFilter( 'fl-asst.list-item-actions', 'fl-assistant', ( actions, { item, listType } ) => {
-	const handle = 'fl-content'
+addFilter('fl-asst.list-item-actions', 'fl-assistant', (actions, { item, listType }) => {
+	const handle = 'fl-content';
 
-	if ( 'post' === listType ) {
-		const i = actions.findIndex( action => 'edit-post' === action.handle )
-		if ( i ) {
-
+	if ('post' === listType) {
+		const i = actions.findIndex((action) => 'edit-post' === action.handle);
+		if (i) {
 			// Replace existing admin edit action
-			const action = actions[i]
-			delete action.href
-			action.isShowing = true
-			action.title = __( 'Edit Details' )
+			const action = actions[i];
+			delete action.href;
+			action.isShowing = true;
+			action.title = __('Edit Details');
 			action.to = {
 				pathname: `/${handle}/post/${item.id}`,
-				state: { item }
-			}
+				state: { item },
+			};
 		}
 	}
 
-	return actions
-} )
+	return actions;
+});

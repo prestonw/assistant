@@ -1,3 +1,3 @@
-import * as FramerMotion from 'vendor-framer-motion'
+import * as FramerMotion from 'vendor-framer-motion';
 
-window.FramerMotion = window.FramerMotion || FramerMotion
+window.FramerMotion = window.FramerMotion || FramerMotion;

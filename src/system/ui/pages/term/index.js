@@ -1,169 +1,156 @@
-import React from 'react'
-import { __ } from '@wordpress/i18n'
-import { Page, Form, Layout } from 'ui'
-import { getWpRest } from 'utils/wordpress'
-import { getSystemActions } from 'data'
+import React from 'react';
+import { __ } from '@wordpress/i18n';
+import { Page, Form, Layout } from 'ui';
+import { getWpRest } from 'utils/wordpress';
+import { getSystemActions } from 'data';
 
+export const Term = ({ location, history }) => {
+	const { item } = location.state;
+	const { id, title, description, slug, parent, count, taxonomy, isHierarchical } = item;
+	const wpRest = getWpRest();
+	const { setCurrentHistoryState } = getSystemActions();
 
-export const Term = ( { location, history } ) => {
-	const { item } = location.state
-	const {
-		id,
-		title,
-		description,
-		slug,
-		parent,
-		count,
-		taxonomy,
-		isHierarchical
-	} = item
-	const wpRest = getWpRest()
-	const { setCurrentHistoryState } = getSystemActions()
-
-
-	const onSubmit = ( { changed, ids } ) => {
-
+	const onSubmit = ({ changed, ids }) => {
 		const data = {
 			meta: {},
-		}
-		for ( let key in changed ) {
-			if ( ! ids[key] ) {
-				continue
+		};
+		for (let key in changed) {
+			if (!ids[key]) {
+				continue;
 			}
-			data[ids[key]] = changed[key]
+			data[ids[key]] = changed[key];
 		}
 
-		if ( 'description' in changed ) {
-			item.description = changed.description
+		if ('description' in changed) {
+			item.description = changed.description;
 		}
 
-		if ( 'title' in changed ) {
-			item.title = changed.title
-			data.name = changed.title
+		if ('title' in changed) {
+			item.title = changed.title;
+			data.name = changed.title;
 		}
 
-		if ( 'parent' in changed ) {
-			item.parent = changed.parent
-			data.parent = changed.parent
+		if ('parent' in changed) {
+			item.parent = changed.parent;
+			data.parent = changed.parent;
 		}
 
-		if ( 'slug' in changed ) {
-			item.slug = changed.slug
+		if ('slug' in changed) {
+			item.slug = changed.slug;
 		}
 
-		const handleError = error => {
-			alert( __( 'Error: Changes not saved! Please try again.' ) )
-			if ( error ) {
-				console.log( error ) // eslint-disable-line no-console
+		const handleError = (error) => {
+			alert(__('Error: Changes not saved! Please try again.'));
+			if (error) {
+				console.log(error); // eslint-disable-line no-console
 			}
-		}
+		};
 
-		wpRest.terms().update( item.id, 'data', data ).then( response => {
-			const { data } = response
-			if ( data.error ) {
-				handleError()
-			} else {
-				setCurrentHistoryState( { item } )
-				alert( __( 'Changes Saved!' ) )
-			}
-		} ).catch( error => {
-			handleError( error )
-		} )
-	}
+		wpRest
+			.terms()
+			.update(item.id, 'data', data)
+			.then((response) => {
+				const { data } = response;
+				if (data.error) {
+					handleError();
+				} else {
+					setCurrentHistoryState({ item });
+					alert(__('Changes Saved!'));
+				}
+			})
+			.catch((error) => {
+				handleError(error);
+			});
+	};
 
 	const deleteTerm = () => {
-		if ( confirm( __( 'Do you really want to delete this term?' ) ) ) {
-			wpRest.terms().update( id, 'trash' ).then( () => {
-				alert( 'Term permanently deleted!' )
-			} )
-			history.goBack()
+		if (confirm(__('Do you really want to delete this term?'))) {
+			wpRest
+				.terms()
+				.update(id, 'trash')
+				.then(() => {
+					alert('Term permanently deleted!');
+				});
+			history.goBack();
 		}
-	}
+	};
 
-
-	const { hasChanges, resetForm, submitForm, renderForm } = Form.useForm( {
+	const { hasChanges, resetForm, submitForm, renderForm } = Form.useForm({
 		sections: {
 			details: {
-				label: __( 'Details' ),
+				label: __('Details'),
 				fields: {
 					title: {
-						label: __( 'Name' ),
+						label: __('Name'),
 						labelPlacement: 'above',
 						value: title,
 						component: 'text',
 					},
 					slug: {
-						label: __( 'Slug' ),
+						label: __('Slug'),
 						labelPlacement: 'above',
 						value: slug,
 						component: 'text',
 					},
 					parent: {
-						label: __( 'Parent' ),
+						label: __('Parent'),
 						labelPlacement: 'above',
 						component: 'parent-terms',
 						termId: item.id,
 						taxonomy,
 						value: parent,
-						isVisible: isHierarchical ? true : false
+						isVisible: isHierarchical ? true : false,
 					},
 					description: {
-						label: __( 'Description' ),
+						label: __('Description'),
 						labelPlacement: 'above',
 						value: description,
 						component: 'textarea',
 						rows: 6,
 					},
 					count: {
-						label: __( 'Post Count' ),
+						label: __('Post Count'),
 						labelPlacement: 'beside',
 						type: 'text',
 						component: 'plain-text',
-						value: count
-					}
-
-				}
+						value: count,
+					},
+				},
 			},
 			actions: {
-				label: __( 'Actions' ),
+				label: __('Actions'),
 				fields: {
 					actions: {
 						component: 'actions',
 						options: [
 							{
-								label: __( 'Edit in Admin' ),
+								label: __('Edit in Admin'),
 								href: item.editUrl,
 							},
 							{
-								label: __( 'View Archive' ),
+								label: __('View Archive'),
 								href: item.url,
 							},
 							{
-								label: __( 'Delete' ),
+								label: __('Delete'),
 								onClick: deleteTerm,
-								status: 'destructive'
+								status: 'destructive',
 							},
-						]
-					}
-				}
+						],
+					},
+				},
 			},
 		},
 		onSubmit,
-		defaults: item } )
+		defaults: item,
+	});
 
 	const Footer = () => {
-		return (
-			<Layout.PublishBar
-				onPublish={ submitForm }
-				onDiscard={ resetForm }
-			/>
-		)
-	}
+		return <Layout.PublishBar onPublish={submitForm} onDiscard={resetForm} />;
+	};
 	return (
-		<Page title={ __( 'Edit Term' ) } padX={ true } footer={ hasChanges && <Footer /> }>
-
+		<Page title={__('Edit Term')} padX={true} footer={hasChanges && <Footer />}>
 			{renderForm()}
-
-		</Page >
-	)
-}
+		</Page>
+	);
+};

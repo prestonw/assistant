@@ -1,10 +1,4 @@
-import { createStoreRegistry } from '@beaverbuilder/app-core'
+import { createStoreRegistry } from '@beaverbuilder/app-core';
 
-export const {
-	registerStore,
-	useStore,
-	getStore,
-	getDispatch,
-	getSelectors,
-	getHooks,
-} = createStoreRegistry()
+export const { registerStore, useStore, getStore, getDispatch, getSelectors, getHooks } =
+	createStoreRegistry();

@@ -1,7 +1,4 @@
-import ConnectCard from './connect-card'
-import ConnectButton from './connect-button'
+import ConnectCard from './connect-card';
+import ConnectButton from './connect-button';
 
-export {
-	ConnectCard,
-	ConnectButton
-}
+export { ConnectCard, ConnectButton };

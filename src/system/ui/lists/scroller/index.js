@@ -1,57 +1,57 @@
-import React, { useState, useEffect, useRef } from 'react'
-import classname from 'classnames'
-import { List } from '../'
+import React, { useState, useEffect, useRef } from 'react';
+import classname from 'classnames';
+import { List } from '../';
 
-const hasReachedBounds = e => {
-	const { scrollTop, clientHeight, scrollHeight } = e.target
-	const bottom = scrollTop + clientHeight
-	return bottom + 150 >= scrollHeight
-}
+const hasReachedBounds = (e) => {
+	const { scrollTop, clientHeight, scrollHeight } = e.target;
+	const bottom = scrollTop + clientHeight;
+	return bottom + 150 >= scrollHeight;
+};
 
-export const useScrollLoader = ( {
+export const useScrollLoader = ({
 	ref = window,
 	hasMore = true,
 	callback = () => {},
 	shouldFetch = hasReachedBounds,
-} ) => {
-	const [ isFetching, setIsFetching ] = useState( true )
+}) => {
+	const [isFetching, setIsFetching] = useState(true);
 
-	const reset = () => setIsFetching( true )
+	const reset = () => setIsFetching(true);
 
-	useEffect( () => {
-		if ( 'undefined' === typeof ref.current ) {
-			return
+	useEffect(() => {
+		if ('undefined' === typeof ref.current) {
+			return;
 		}
-		if ( hasMore && ! isFetching ) {
-			const handleScroll = e => {
-				if ( shouldFetch( e ) ) {
-					setIsFetching( true )
+		if (hasMore && !isFetching) {
+			const handleScroll = (e) => {
+				if (shouldFetch(e)) {
+					setIsFetching(true);
 				}
-			}
-			ref.current.addEventListener( 'scroll', handleScroll )
+			};
+			ref.current.addEventListener('scroll', handleScroll);
 			return () => {
-				if ( ref.current ) {
-					ref.current.removeEventListener( 'scroll', handleScroll )
+				if (ref.current) {
+					ref.current.removeEventListener('scroll', handleScroll);
 				}
-			}
+			};
 		}
-	}, [ isFetching, hasMore ] )
+	}, [isFetching, hasMore]);
 
-	useEffect( () => {
-		if ( isFetching ) {
-			callback( () => {
-				setIsFetching( false )
-			} )
+	useEffect(() => {
+		if (isFetching) {
+			callback(() => {
+				setIsFetching(false);
+			});
 		}
-	}, [ isFetching ] )
+	}, [isFetching]);
 
 	return {
 		isFetching,
 		reset,
-	}
-}
+	};
+};
 
-export const Scroller = ( {
+export const Scroller = ({
 	items = [],
 	hasMoreItems = true,
 	loadItems = () => {},
@@ -61,42 +61,42 @@ export const Scroller = ( {
 	noResultsMessage,
 	endcap: EndCap = List.EndMessage,
 	...rest
-} ) => {
-	const scrollRef = useRef()
-	const { isFetching, reset } = List.useScrollLoader( {
+}) => {
+	const scrollRef = useRef();
+	const { isFetching, reset } = List.useScrollLoader({
 		ref: scrollRef,
 		hasMore: hasMoreItems,
 		callback: loadItems,
-	} )
+	});
 
-	useEffect( () => {
-		if ( 0 === items.length ) {
-			reset()
+	useEffect(() => {
+		if (0 === items.length) {
+			reset();
 		}
-	}, [ items.length, hasMoreItems ] )
+	}, [items.length, hasMoreItems]);
 
-	const classes = classname( 'fl-asst-list-scroller fl-asst-scroller', scrollerClassName )
+	const classes = classname('fl-asst-list-scroller fl-asst-scroller', scrollerClassName);
 
 	return (
-		<div className={ classes } ref={ scrollRef }>
+		<div className={classes} ref={scrollRef}>
 			{before}
-			<List items={ items } { ...rest } />
-			{ isFetching && (
-				<div style={ { minHeight: 100 } }>
+			<List items={items} {...rest} />
+			{isFetching && (
+				<div style={{ minHeight: 100 }}>
 					<List.Loading />
 				</div>
-			) }
-			{ ! isFetching && ! hasMoreItems && ! items.length && (
-				<div style={ { minHeight: 100 } }>
-					<List.NoResultsMessage message={ noResultsMessage } />
+			)}
+			{!isFetching && !hasMoreItems && !items.length && (
+				<div style={{ minHeight: 100 }}>
+					<List.NoResultsMessage message={noResultsMessage} />
 				</div>
 			)}
-			{ false !== EndCap && ! isFetching && ! hasMoreItems && !! items.length && (
-				<div style={ { minHeight: 100 } }>
+			{false !== EndCap && !isFetching && !hasMoreItems && !!items.length && (
+				<div style={{ minHeight: 100 }}>
 					<EndCap />
 				</div>
 			)}
 			{after}
 		</div>
-	)
-}
+	);
+};

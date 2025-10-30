@@ -1,3 +1,3 @@
-import * as ReactRouterDOM from 'vendor-react-router-dom'
+import * as ReactRouterDOM from 'vendor-react-router-dom';
 
-window.ReactRouterDOM = window.ReactRouterDOM || ReactRouterDOM
+window.ReactRouterDOM = window.ReactRouterDOM || ReactRouterDOM;

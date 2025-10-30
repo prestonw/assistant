@@ -1,32 +1,32 @@
-import React, { createContext, useContext } from 'react'
-import { useMedia } from 'utils/react'
+import React, { createContext, useContext } from 'react';
+import { useMedia } from 'utils/react';
 
-const Env = {}
+const Env = {};
 
 Env.defaults = {
 	application: 'standalone',
 	isMobile: false,
 	isCompactHeight: false,
-}
+};
 
-const EnvContext = createContext( Env.defaults )
+const EnvContext = createContext(Env.defaults);
 
-Env.Provider = ( { application = 'standalone', ...rest } ) => {
-	const isMobile = useMedia( { maxWidth: '450px' } )
-	const isCompactHeight = useMedia( { maxHeight: '475px' } )
+Env.Provider = ({ application = 'standalone', ...rest }) => {
+	const isMobile = useMedia({ maxWidth: '450px' });
+	const isCompactHeight = useMedia({ maxHeight: '475px' });
 	return (
 		<EnvContext.Provider
-			value={ {
+			value={{
 				...Env.defaults,
 				application,
 				isMobile,
-				isCompactHeight
-			} }
-			{ ...rest }
+				isCompactHeight,
+			}}
+			{...rest}
 		/>
-	)
-}
+	);
+};
 
-Env.use = () => useContext( EnvContext )
+Env.use = () => useContext(EnvContext);
 
-export default Env
+export default Env;

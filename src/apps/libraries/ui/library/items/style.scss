@@ -1,56 +1,55 @@
 .fl-asst {
-
-    .fl-asst-library-item-title {
-        font-size: 12px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        padding: var(--fluid-med-space) 0;
-    }
+	.fl-asst-library-item-title {
+		font-size: 12px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		padding: var(--fluid-med-space) 0;
+	}
 	.fluid-frame-size-medium {
 		.fl-asst-library-content {
 			.fluid-collection-appearance-grid {
-				grid-template-columns: repeat( 3 , 1fr );
+				grid-template-columns: repeat(3, 1fr);
 			}
 		}
 	}
 
-    .fl-asst-import-bar {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        padding: var(--fluid-med-space);
-        background: var(--fluid-inset-background);
-        border-bottom: 1px solid var(--fluid-opaque-10);
-        color: var(--fluid-color);
-    }
+	.fl-asst-import-bar {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		padding: var(--fluid-med-space);
+		background: var(--fluid-inset-background);
+		border-bottom: 1px solid var(--fluid-opaque-10);
+		color: var(--fluid-color);
+	}
 
-    .fluid-color-scheme-dark {
-        .fl-asst-import-bar {
-            border-bottom-color: var(--fluid-opaque-3);
-        }
-    }
+	.fluid-color-scheme-dark {
+		.fl-asst-import-bar {
+			border-bottom-color: var(--fluid-opaque-3);
+		}
+	}
 
-    .fl-asst-filter-item-full-width {
-        grid-column: 1 / -1;
-    }
+	.fl-asst-filter-item-full-width {
+		grid-column: 1 / -1;
+	}
 
-    .fl-asst-filter-item-search {
-        input {
-            padding-left: 12px;
-            border-radius: 0;
-            box-shadow: none;
-        }
+	.fl-asst-filter-item-search {
+		input {
+			padding-left: 12px;
+			border-radius: 0;
+			box-shadow: none;
+		}
 
-        input:focus {
-            box-shadow: 0px 0px 0px 1.5px var(--fluid-accent);
-        }
-    }
+		input:focus {
+			box-shadow: 0px 0px 0px 1.5px var(--fluid-accent);
+		}
+	}
 
-    .fl-asst-library-sticky {
-        position: sticky;
-        top: 0;
-        z-index: 5;
-    }
+	.fl-asst-library-sticky {
+		position: sticky;
+		top: 0;
+		z-index: 5;
+	}
 }

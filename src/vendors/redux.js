@@ -1,3 +1,3 @@
-import * as Redux from 'vendor-redux'
+import * as Redux from 'vendor-redux';
 
-window.Redux = window.Redux || Redux
+window.Redux = window.Redux || Redux;

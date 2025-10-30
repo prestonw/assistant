@@ -1,11 +1,9 @@
-import { lazy } from 'react'
-import { registerApp } from 'assistant'
-import { __ } from '@wordpress/i18n'
-import Icon from './icon'
+import { lazy } from 'react';
+import { registerApp } from 'assistant';
+import { __ } from '@wordpress/i18n';
+import Icon from './icon';
 
-const App = lazy( () => import(
-	/* webpackChunkName: "app-content" */ './app'
-) )
+const App = lazy(() => import(/* webpackChunkName: "app-content" */ './app'));
 
 export const defaultState = {
 	listStyle: '',
@@ -15,15 +13,15 @@ export const defaultState = {
 		post_status: 'any',
 		post_type: 'fl_code',
 		label: '0',
-	}
-}
+	},
+};
 
-export const cache = [ 'listStyle', 'query' ]
+export const cache = ['listStyle', 'query'];
 
-registerApp( 'fl-code', {
-	label: __( 'Code' ),
+registerApp('fl-code', {
+	label: __('Code'),
 	root: App,
 	icon: Icon,
 	state: { ...defaultState },
-	cache
-} )
+	cache,
+});

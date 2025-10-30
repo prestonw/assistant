@@ -1,39 +1,43 @@
 .fl-asst {
-    .fl-asst-inline-create-item {
-        box-shadow: none;
+	.fl-asst-inline-create-item {
+		box-shadow: none;
 
-        input {
+		input {
 			background: transparent;
-            padding-left: 0;
+			padding-left: 0;
 
-            &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-                color: var(--fluid-blue-7);
-                opacity: 1;
-            }
-            &::-moz-placeholder { /* Firefox 19+ */
-                color: var(--fluid-blue-7);
-                opacity: 1;
-            }
-            &:-ms-input-placeholder { /* IE 10+ */
-                color: var(--fluid-blue-7);
-                opacity: 1;
-            }
-            &:-moz-placeholder { /* Firefox 18- */
-                color: var(--fluid-blue-7);
-                opacity: 1;
-            }
-        }
-    }
+			&::-webkit-input-placeholder {
+				/* Chrome/Opera/Safari */
+				color: var(--fluid-blue-7);
+				opacity: 1;
+			}
+			&::-moz-placeholder {
+				/* Firefox 19+ */
+				color: var(--fluid-blue-7);
+				opacity: 1;
+			}
+			&:-ms-input-placeholder {
+				/* IE 10+ */
+				color: var(--fluid-blue-7);
+				opacity: 1;
+			}
+			&:-moz-placeholder {
+				/* Firefox 18- */
+				color: var(--fluid-blue-7);
+				opacity: 1;
+			}
+		}
+	}
 
 	.fl-asst-libraries-grid {
 		.fluid-collection-appearance-grid {
-			grid-template-columns: repeat( 2 , 1fr );
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 	.fluid-frame-size-medium {
 		.fl-asst-libraries-grid {
 			.fluid-collection-appearance-grid {
-				grid-template-columns: repeat( 3 , 1fr );
+				grid-template-columns: repeat(3, 1fr);
 			}
 		}
 	}

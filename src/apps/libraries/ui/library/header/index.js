@@ -1,30 +1,26 @@
-import React from 'react'
-import { Libraries } from '@beaverbuilder/cloud-ui'
-import { Layout } from 'assistant/ui'
+import React from 'react';
+import { Libraries } from '@beaverbuilder/cloud-ui';
+import { Layout } from 'assistant/ui';
 
 export default () => {
-	const { library } = Libraries.LibraryContext.use()
+	const { library } = Libraries.LibraryContext.use();
 
 	return (
 		<>
 			<Layout.Box
-				style={ {
+				style={{
 					textAlign: 'center',
-					padding: 0
-				} }
+					padding: 0,
+				}}
 			>
-				<Layout.Headline style={ { margin: 20 } }>
-					{ library.name }
-				</Layout.Headline>
+				<Layout.Headline style={{ margin: 20 }}>{library.name}</Layout.Headline>
 
-				{ library.description &&
-					<div style={ { lineHeight: 1.4, margin: '0 20px' } }>
-						{ library.description }
-					</div>
-				}
+				{library.description && (
+					<div style={{ lineHeight: 1.4, margin: '0 20px' }}>{library.description}</div>
+				)}
 			</Layout.Box>
 
 			<Libraries.LibraryMemberThumbs />
 		</>
-	)
-}
+	);
+};

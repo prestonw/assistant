@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default () => {
 	return (
@@ -10,5 +10,5 @@ export default () => {
 			<circle cx="17" cy="13.5" r="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
 			<circle cx="10" cy="13.5" r="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
 		</svg>
-	)
-}
+	);
+};

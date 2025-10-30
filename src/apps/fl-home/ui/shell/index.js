@@ -1,179 +1,141 @@
-__webpack_public_path__ = `${ FL_ASSISTANT_CONFIG.pluginURL }/build/`
+__webpack_public_path__ = `${FL_ASSISTANT_CONFIG.pluginURL}/build/`;
 
-import React from 'react'
-import c from 'classnames'
-import { __ } from '@wordpress/i18n'
-import { DOWN, UP } from '@wordpress/keycodes'
-import { useHistory } from 'react-router-dom'
-import { App, Button, Icon } from 'assistant/ui'
-import { getSystemConfig } from 'assistant/data'
-import './style.scss'
+import React from 'react';
+import c from 'classnames';
+import { __ } from '@wordpress/i18n';
+import { DOWN, UP } from '@wordpress/keycodes';
+import { useHistory } from 'react-router-dom';
+import { App, Button, Icon } from 'assistant/ui';
+import { getSystemConfig } from 'assistant/data';
+import './style.scss';
 
-const Shell = ( {
-	className,
-	children,
-	baseURL,
-	...rest
-} ) => {
-	const classes = c( 'fluid-page', 'fl-asst-home-shell', className )
+const Shell = ({ className, children, baseURL, ...rest }) => {
+	const classes = c('fluid-page', 'fl-asst-home-shell', className);
 	return (
-		<div className={ classes } { ...rest }>
+		<div className={classes} {...rest}>
 			<nav className="fl-asst-home-shell-sidebar">
 				<div
-					style={ {
+					style={{
 						fontSize: 18,
 						minHeight: 80,
 						display: 'flex',
 						alignItems: 'center',
 						padding: 20,
-						paddingLeft: 25
-					} }
+						paddingLeft: 25,
+					}}
 				>
 					<Branding />
 				</div>
-				<FeatureSidebarSection baseURL={ baseURL } />
+				<FeatureSidebarSection baseURL={baseURL} />
 				<AppsSection />
 				<ShortcutsSection />
 			</nav>
-			<div className="fl-asst-home-shell-content">
-				{children}
-			</div>
+			<div className="fl-asst-home-shell-content">{children}</div>
 		</div>
-	)
-}
+	);
+};
 
 const Branding = () => (
 	<>
-		<Icon.PencilOutline style={ { marginRight: 13 } } />
-		{ __( 'Assistant' ) }
+		<Icon.PencilOutline style={{ marginRight: 13 }} />
+		{__('Assistant')}
 	</>
-)
+);
 
-const SidebarSection = ( {
-	title,
-	className,
-	children,
-	...rest
-} ) => {
-
-	const classes = c( 'fl-asst-home-shell-sidebar-section', className )
+const SidebarSection = ({ title, className, children, ...rest }) => {
+	const classes = c('fl-asst-home-shell-sidebar-section', className);
 
 	return (
-		<div className={ classes } { ...rest }>
-			{ title && (
-				<div className="fl-asst-home-shell-sidebar-section-title">
-					{title}
-				</div>
-			) }
-			<div>
-				{children}
-			</div>
+		<div className={classes} {...rest}>
+			{title && <div className="fl-asst-home-shell-sidebar-section-title">{title}</div>}
+			<div>{children}</div>
 		</div>
-	)
-}
+	);
+};
 
-const FeatureSidebarSection = ( { baseURL = '' } ) => {
+const FeatureSidebarSection = ({ baseURL = '' }) => {
 	return (
 		<SidebarSection>
 			<ul>
 				<li>
-					<Button
-						to={ `${baseURL}/` }
-						appearance="transparent"
-						icon={ <Icon.Dashboard /> }
-						isSelected
-					>
-						{ __( 'Dashboard', 'assistant' ) }
+					<Button to={`${baseURL}/`} appearance="transparent" icon={<Icon.Dashboard />} isSelected>
+						{__('Dashboard', 'assistant')}
 					</Button>
 				</li>
 			</ul>
 		</SidebarSection>
-	)
-}
+	);
+};
 
 const AppsSection = () => {
-	const history = useHistory()
+	const history = useHistory();
 	return (
-		<SidebarSection title={ __( 'Apps', 'assistant' ) }>
+		<SidebarSection title={__('Apps', 'assistant')}>
 			<App.List>
-				{ ( { label, handle, icon, moveDown, moveUp } ) => {
-
+				{({ label, handle, icon, moveDown, moveUp }) => {
 					const location = {
-						pathname: `/${handle}`
-					}
+						pathname: `/${handle}`,
+					};
 					const iconProps = {
 						icon,
 						context: 'sidebar',
-					}
+					};
 					return (
 						<Button
-							appearance='transparent'
-							title={ label }
-							icon={ <Icon.Safely { ...iconProps } /> }
-							onClick={ () => {
-								history.push( location )
-							} }
-							onKeyDown={ e => {
-								if ( e.keyCode === DOWN ) {
-									moveDown()
-									e.preventDefault()
+							appearance="transparent"
+							title={label}
+							icon={<Icon.Safely {...iconProps} />}
+							onClick={() => {
+								history.push(location);
+							}}
+							onKeyDown={(e) => {
+								if (e.keyCode === DOWN) {
+									moveDown();
+									e.preventDefault();
 								}
-								if ( e.keyCode === UP ) {
-									moveUp()
-									e.preventDefault()
+								if (e.keyCode === UP) {
+									moveUp();
+									e.preventDefault();
 								}
-							} }
+							}}
 						>
-							{ label }
+							{label}
 						</Button>
-					)
-				} }
+					);
+				}}
 			</App.List>
 		</SidebarSection>
-	)
-}
+	);
+};
 
 const ShortcutsSection = () => {
-
-	const { adminURLs } = getSystemConfig()
+	const { adminURLs } = getSystemConfig();
 
 	const shortcuts = [
 		{
-			label: __( 'WordPress Admin', 'assistant' ),
+			label: __('WordPress Admin', 'assistant'),
 			href: adminURLs.dashboard,
-			icon: Icon.WordPress
+			icon: Icon.WordPress,
 		},
-	]
-	if ( 1 > shortcuts.length ) {
-		return null
+	];
+	if (1 > shortcuts.length) {
+		return null;
 	}
 	return (
-		<SidebarSection
-			title="Shortcuts"
-			className="fl-asst-home-shortcut-list"
-		>
+		<SidebarSection title="Shortcuts" className="fl-asst-home-shortcut-list">
 			<ul>
-				{ shortcuts.map( ( {
-					label,
-					href,
-					icon: ShortcutIcon = Icon.Placeholder
-				} ) => {
+				{shortcuts.map(({ label, href, icon: ShortcutIcon = Icon.Placeholder }) => {
 					return (
-						<li key={ href }>
-							<Button
-								href={ href }
-								target="_blank"
-								appearance="transparent"
-								icon={ <ShortcutIcon /> }
-							>
-								{ label }
+						<li key={href}>
+							<Button href={href} target="_blank" appearance="transparent" icon={<ShortcutIcon />}>
+								{label}
 							</Button>
 						</li>
-					)
-				} ) }
+					);
+				})}
 			</ul>
 		</SidebarSection>
-	)
-}
+	);
+};
 
-export default Shell
+export default Shell;

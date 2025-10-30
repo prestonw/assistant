@@ -1,24 +1,24 @@
-import React from 'react'
-import { __ } from '@wordpress/i18n'
-import { useAppState, getAppActions } from 'assistant/data'
-import { Filter } from 'assistant/ui'
-import { statuses, defaultStatus } from '../../../data'
+import React from 'react';
+import { __ } from '@wordpress/i18n';
+import { useAppState, getAppActions } from 'assistant/data';
+import { Filter } from 'assistant/ui';
+import { statuses, defaultStatus } from '../../../data';
 
 const Filters = () => {
-	const { type } = useAppState( 'fl-comments' )
-	const { setType } = getAppActions( 'fl-comments' )
+	const { type } = useAppState('fl-comments');
+	const { setType } = getAppActions('fl-comments');
 	return (
 		<Filter>
 			<Filter.RadioGroupItem
-				title={ __( 'Status' ) }
-				items={ statuses }
-				value={ type }
-				defaultValue={ defaultStatus }
-				onChange={ value => setType( value ) }
+				title={__('Status')}
+				items={statuses}
+				value={type}
+				defaultValue={defaultStatus}
+				onChange={(value) => setType(value)}
 			/>
-			<Filter.Button onClick={ () => setType( defaultStatus ) }>{__( 'Reset Filter' )}</Filter.Button>
+			<Filter.Button onClick={() => setType(defaultStatus)}>{__('Reset Filter')}</Filter.Button>
 		</Filter>
-	)
-}
+	);
+};
 
-export default Filters
+export default Filters;

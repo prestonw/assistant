@@ -1,70 +1,67 @@
-import React from 'react'
-import { sprintf } from '@wordpress/i18n'
-import { List } from 'assistant/ui'
-import { useAppState, getAppActions, getSystemConfig } from 'assistant/data'
-import Section from '../generic'
-import './style.scss'
+import React from 'react';
+import { sprintf } from '@wordpress/i18n';
+import { List } from 'assistant/ui';
+import { useAppState, getAppActions, getSystemConfig } from 'assistant/data';
+import Section from '../generic';
+import './style.scss';
 
-const RecentPostsSection = ( { isCollapsed, ...rest } ) => {
-	const { recentPostsQuery: query } = useAppState( 'fl-home' )
-	const { setRecentPostsQuery: setQuery } = getAppActions( 'fl-home' )
-	const { contentTypes } = getSystemConfig()
-	const baseUrl = '/fl-content'
-	const postType = contentTypes[ query[ 'post_type' ] ]
-	let postTypeLabel = 'Posts'
-	if ( undefined !== postType ) {
-		postTypeLabel = postType.labels.plural
+const RecentPostsSection = ({ isCollapsed, ...rest }) => {
+	const { recentPostsQuery: query } = useAppState('fl-home');
+	const { setRecentPostsQuery: setQuery } = getAppActions('fl-home');
+	const { contentTypes } = getSystemConfig();
+	const baseUrl = '/fl-content';
+	const postType = contentTypes[query['post_type']];
+	let postTypeLabel = 'Posts';
+	if (undefined !== postType) {
+		postTypeLabel = postType.labels.plural;
 	}
 
 	const Actions = () => (
 		<select
-			value={ query.post_type }
-			onChange={ e => {
-				setQuery( { ...query, post_type: e.target.value } )
-			} }
+			value={query.post_type}
+			onChange={(e) => {
+				setQuery({ ...query, post_type: e.target.value });
+			}}
 		>
-			{ Object.entries( contentTypes ).map( ( [ value, def ] ) => {
+			{Object.entries(contentTypes).map(([value, def]) => {
 				return (
-					<option
-						key={ value }
-						value={ value }
-					>
-						{ def.labels.plural }
+					<option key={value} value={value}>
+						{def.labels.plural}
 					</option>
-				)
-			} ) }
+				);
+			})}
 		</select>
-	)
+	);
 
 	return (
 		<Section
-			title={ sprintf( 'Recent %s', postTypeLabel ) }
+			title={sprintf('Recent %s', postTypeLabel)}
 			className="recent-posts-feature-section"
-			padContent={ false }
-			headerActions={ ! isCollapsed && <Actions /> }
-			isCollapsed={ isCollapsed }
-			{ ...rest }
+			padContent={false}
+			headerActions={!isCollapsed && <Actions />}
+			isCollapsed={isCollapsed}
+			{...rest}
 		>
 			<List.Posts
-				endcap={ false }
-				query={ query }
-				getItemProps={ ( item, defaultProps ) => {
-					if ( item.id ) {
+				endcap={false}
+				query={query}
+				getItemProps={(item, defaultProps) => {
+					if (item.id) {
 						return {
 							...defaultProps,
 							description: null,
 							marks: [],
 							to: {
 								pathname: `${baseUrl}/post/${item.id}`,
-								state: { item }
+								state: { item },
 							},
-						}
+						};
 					}
-					return defaultProps
-				} }
+					return defaultProps;
+				}}
 			/>
 		</Section>
-	)
-}
+	);
+};
 
-export default RecentPostsSection
+export default RecentPostsSection;

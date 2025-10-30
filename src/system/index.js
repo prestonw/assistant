@@ -1,18 +1,18 @@
-import { api as data } from './data'
-import * as ui from './ui'
-import utils from './utils'
-import cloud from './cloud'
+import { api as data } from './data';
+import * as ui from './ui';
+import utils from './utils';
+import cloud from './cloud';
 
-const FL = window.FL || {}
-const existing = FL.Assistant || {}
-const { registerApp, toggleIsShowingUI } = data.getSystemActions()
+const FL = window.FL || {};
+const existing = FL.Assistant || {};
+const { registerApp, toggleIsShowingUI } = data.getSystemActions();
 
-const getActions = () => ( {
+const getActions = () => ({
 	registerApp,
 	toggleUI: toggleIsShowingUI,
-} )
+});
 
-const getConfig = () => data.getSystemConfig()
+const getConfig = () => data.getSystemConfig();
 
 // Public FL.Assistant api
 const Assistant = {
@@ -30,9 +30,9 @@ const Assistant = {
 	// Would love to remove someday
 	registerApp,
 	toggleUI: toggleIsShowingUI,
-}
+};
 
 window.FL = {
 	...FL,
 	Assistant,
-}
+};

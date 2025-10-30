@@ -1,32 +1,32 @@
 export const actions = {
-	setUpdateQueue( queue ) {
+	setUpdateQueue(queue) {
 		return {
 			type: 'SET_UPDATE_QUEUE',
 			queue,
-		}
+		};
 	},
-	setUpdateQueueItem( item ) {
+	setUpdateQueueItem(item) {
 		return {
 			type: 'SET_UPDATE_QUEUE_ITEM',
 			item,
-		}
+		};
 	},
-	setUpdateQueueItems( items ) {
+	setUpdateQueueItems(items) {
 		return {
 			type: 'SET_UPDATE_QUEUE_ITEMS',
 			items,
-		}
+		};
 	},
-	setCompletedUpdates( ids ) {
+	setCompletedUpdates(ids) {
 		return {
 			type: 'SET_COMPLETED_UPDATES',
 			ids,
-		}
+		};
 	},
-	removeCompletedUpdate( id ) {
+	removeCompletedUpdate(id) {
 		return {
 			type: 'REMOVE_COMPLETED_UPDATE',
 			id,
-		}
-	}
-}
+		};
+	},
+};

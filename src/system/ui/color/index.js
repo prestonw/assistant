@@ -1,6 +1,4 @@
-
 const Color = {
-
 	/**
 	 * Note: Colors changed here need to be changed in
 	 * LabelsRepository on the backend as well.
@@ -26,6 +24,6 @@ const Color = {
 		pink: 'var(--fl-asst-pink)',
 		purple: 'var(--fl-asst-purple)',
 	},
-}
+};
 
-export default Color
+export default Color;
