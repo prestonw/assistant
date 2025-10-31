@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { __ } from '@wordpress/i18n';
-import { Icon, Form } from 'ui';
-import { getWpRest } from 'utils/wordpress';
+import { Icon } from 'ui';
 import { getSystemActions, getSystemConfig } from 'data';
 
 const Rules = ({ item, onChange }) => {

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import classname from 'classnames';
 import { Color } from '@beaverbuilder/fluid';
 import { Root as AppCoreRoot } from '@beaverbuilder/app-core';
 import { getSystemActions, useSystemState, getSystemConfig } from 'assistant/data';

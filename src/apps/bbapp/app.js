@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { useSystemState, useAppState, getAppActions } from 'assistant/data';
 import { __ } from '@wordpress/i18n';
 import { Icon } from 'assistant/ui';

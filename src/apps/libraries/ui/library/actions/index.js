@@ -1,7 +1,7 @@
 import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Button, Icon, Layout } from 'assistant/ui';
+import { Button, Icon } from 'assistant/ui';
 import { Libraries } from '@beaverbuilder/cloud-ui';
 import { useSystemState } from 'assistant/data';
 import { Selection } from '@beaverbuilder/fluid';

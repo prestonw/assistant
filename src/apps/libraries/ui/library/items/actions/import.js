@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { getWpRest } from 'assistant/utils/wordpress';
 import { Libraries } from '@beaverbuilder/cloud-ui';
-import { Button, Icon } from 'assistant/ui';
+import { Button } from 'assistant/ui';
 import { Selection } from '@beaverbuilder/fluid';
 import { usePostMediaImport } from 'ui/library/use-post-media-import';
 import cloud from 'assistant/cloud';

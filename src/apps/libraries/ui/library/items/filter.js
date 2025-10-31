@@ -1,7 +1,6 @@
 import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { Libraries } from '@beaverbuilder/cloud-ui';
-import { Toolbar } from '@beaverbuilder/fluid';
 import { Filter } from 'assistant/ui';
 import { useAppState, getAppHooks } from 'assistant/data';
 

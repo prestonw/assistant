@@ -1,7 +1,6 @@
 import React from 'react';
-import { __ } from '@wordpress/i18n';
-import { List, Page, Layout } from 'assistant/ui';
-import { useAppState, getAppActions, getSystemSelectors, getSystemConfig } from 'assistant/data';
+import { List, Layout } from 'assistant/ui';
+import { useAppState, getAppActions } from 'assistant/data';
 import { defaultState } from '../';
 
 export const PostTypeTab = ({ type = 'css' }) => {

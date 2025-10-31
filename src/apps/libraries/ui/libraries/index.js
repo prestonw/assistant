@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { __ } from '@wordpress/i18n';
 import { LibraryNav, formatItem, formatSection } from '@beaverbuilder/cloud-ui';
-import { Page, Icon, Input } from 'assistant/ui';
+import { Page, Icon } from 'assistant/ui';
 import { useAppState, useSystemState } from 'assistant/data';
 import Actions from './actions';
 import LibrariesFilter from './filter';
@@ -87,6 +87,11 @@ export default ({ preloadedLib = false, preloadedTeams = false }) => {
 			.filter((s) => s.items && s.items.length);
 	}, [allSections, search]);
 
+	// Possessive helpers for headlines (handles names ending with 's' and missing user)
+	const toPossessive = (name) => (name && name.endsWith('s') ? `${name}'` : `${name}'s`);
+	const userHeadlineName = cloudUser?.name ?? __('My');
+	const userHeadline = toPossessive(userHeadlineName);
+
 	return (
 		<Page
 			title={__('Libraries')}
@@ -108,10 +113,7 @@ export default ({ preloadedLib = false, preloadedTeams = false }) => {
 
 			<div className="fl-asst-libraries">
 				{(!owner || owner === 'all' || owner === 'user') && (
-					<LibrariesList
-						headline={cloudUser.name.endsWith('s') ? `${cloudUser.name}'` : `${cloudUser.name}'s`}
-						query={query}
-					/>
+					<LibrariesList headline={userHeadline} query={query} />
 				)}
 				{!!libraries?.shared?.length && (owner === 'all' || owner === 'shared') && (
 					<LibrariesList headline={__('Shared Libraries')} type="shared" query={query} />
@@ -122,7 +124,7 @@ export default ({ preloadedLib = false, preloadedTeams = false }) => {
 						return (
 							<LibrariesList
 								key={team.id}
-								headline={cloudUser.name.endsWith('s') ? `${team.name}'` : `${team.name}'s`}
+								headline={toPossessive(team.name)}
 								type="team"
 								team={team}
 								query={query}

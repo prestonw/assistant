@@ -207,8 +207,8 @@ const ImportButton = ({ item }) => {
 						shouldDismiss: false,
 						content: (
 							<>
-								{__('The library item was not able to be imported.')} {__('The post type')} "
-								<strong>{response.data.post_type}</strong>" {__('is not registered on this site.')}
+								{__('The library item was not able to be imported.')} {__('The post type')}
+								&quot;<strong>{response.data.post_type}</strong>&quot; {__('is not registered on this site.')}
 							</>
 						),
 					});
@@ -251,8 +251,8 @@ const ImportButton = ({ item }) => {
 						{postTypeRegistered && __('Library item imported!')}
 						{!postTypeRegistered && (
 							<>
-								{__('The library item was not able to be imported.')} {__('The post type')} "
-								<strong>{type}</strong>" {__('is not registered on this site.')}
+								{__('The library item was not able to be imported.')} {__('The post type')}
+								&quot;<strong>{type}</strong>&quot; {__('is not registered on this site.')}
 							</>
 						)}
 						{editUrl && (

@@ -14,7 +14,7 @@ module.exports = {
     sourceType: 'module',
     ecmaFeatures: { jsx: true },
   },
-  plugins: ['react', 'react-hooks'],
+  plugins: ['react', 'react-hooks', 'unused-imports'], // 👈 added plugin
   settings: { react: { version: 'detect' } },
   extends: [
     '@beaverbuilder/eslint-config',
@@ -52,7 +52,20 @@ module.exports = {
     'no-case-declarations': 'error',
     'eol-last': ['warn', 'always'],
     yoda: 'off',
-    'no-unused-vars': ['warn', { ignoreRestSiblings: true }],
+
+    // ⬇️ replaced default unused-var rules with auto-cleanup plugin
+    'no-unused-vars': 'off',
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
+    ],
+
     'react/display-name': 'off',
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
@@ -68,4 +81,3 @@ module.exports = {
     },
   ],
 };
-

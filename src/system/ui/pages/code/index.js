@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { Page, Form, Layout, Notice, Button } from 'ui';
 import { getWpRest } from 'utils/wordpress';
 import { getSystemActions, getSystemConfig, useSystemState } from 'data';
 import { getCodeActions } from './actions';
 import { Location } from './location';
-import { Icon } from 'ui';
 import './style.scss';
 
 export const Code = ({ location, match, history, CloudUI }) => {
