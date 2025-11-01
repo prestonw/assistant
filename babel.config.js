@@ -1,13 +1,19 @@
-module.exports = function( api ) {
-	api.cache( true )
-
+module.exports = (api) => {
+	// Prevent cache conflicts between test/build environments
+	api.cache.using(() => process.env.NODE_ENV);
+  
+	const isTest = api.env('test');
+  
 	return {
-		presets: [
-			[ '@babel/preset-env', { 'modules': false } ],
-			'@babel/preset-react'
+	  presets: [
+		[
+		  '@babel/preset-env',
+		  isTest
+			? { targets: { node: 'current' } } // Optimised for Jest
+			: { modules: false }               // Optimised for Webpack build
 		],
-		plugins: [
-			'@babel/plugin-transform-runtime',
-		]
-	}
-}
+		'@babel/preset-react'
+	  ],
+	  plugins: ['@babel/plugin-transform-runtime'],
+	};
+  };  

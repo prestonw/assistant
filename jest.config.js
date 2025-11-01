@@ -22,6 +22,11 @@ module.exports = {
 
     // An array of glob patterns indicating a set of files for which coverage information should be collected
     // collectCoverageFrom: null,
+    collectCoverageFrom: [
+        'src/**/*.{js,jsx}',
+        '!src/**/__tests__/**',
+        '!src/**/index.{js,jsx}',
+      ],    
 
     // The directory where Jest should output its coverage files
     coverageDirectory: "coverage",
@@ -66,8 +71,14 @@ module.exports = {
                 api: '123456',
                 reply: '1234',
                 replyUnfiltered: '1234'
-            }
-        }
+            },
+            frameDefaults: {
+              defaultOrigin: 'right',
+              defaultWidth: 420,
+              minWidth: 320,
+              maxWidth: 800,
+            },
+        },
     },
 
     // An array of directory names to be searched recursively up from the requiring module's location
@@ -84,9 +95,23 @@ module.exports = {
     //   "tsx",
     //   "node"
     // ],
+    moduleFileExtensions: ['js', 'jsx', 'json'],
 
     // A map from regular expressions to module names that allow to stub out resources with a single module
     // moduleNameMapper: {},
+
+      moduleNameMapper: {
+        '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+        '\\.(gif|ttf|eot|svg|png|jpe?g|webp)$': '<rootDir>/test/__mocks__/fileMock.js',
+        '^assistant/data$': '<rootDir>/test/__mocks__/assistantDataMock.js',
+        '^assistant/ui$': '<rootDir>/test/__mocks__/assistantUiMock.js',
+        '^assistant/cloud$': '<rootDir>/test/__mocks__/assistantCloudMock.js',
+        '^@beaverbuilder/cloud-ui$': '<rootDir>/test/__mocks__/@beaverbuilder/cloud-ui.js',
+        '^assistant/(.*)$': '<rootDir>/src/$1',
+        '^@/(.*)$': '<rootDir>/src/$1',
+        '^system/(.*)$': '<rootDir>/src/system/$1',
+        '^@wordpress/i18n$': '<rootDir>/test/__mocks__/wpI18nMock.js',
+      },
 
     // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
     // modulePathIgnorePatterns: [],
@@ -125,6 +150,8 @@ module.exports = {
     // roots: [
     //   "<rootDir>"
     // ],
+    roots: ['<rootDir>/src'], // So Jest focuses on the source
+
 
     // Allows you to use a custom runner instead of Jest's default test runner
     // runner: "jest-runner",
@@ -135,11 +162,14 @@ module.exports = {
     // A list of paths to modules that run some code to configure or set up the testing framework before each test
     // setupFilesAfterEnv: [],
 
+    setupFilesAfterEnv: ['<rootDir>/test/setupTests.js'],
+
     // A list of paths to snapshot serializer modules Jest should use for snapshot testing
     // snapshotSerializers: [],
 
     // The test environment that will be used for testing
-    testEnvironment: "node",
+    // testEnvironment: "node",
+    testEnvironment: 'jsdom', // So we can interact with the DOM
 
     // Options that will be passed to the testEnvironment
     // testEnvironmentOptions: {},
@@ -149,11 +179,11 @@ module.exports = {
 
     // The glob patterns Jest uses to detect test files
     testMatch: [
-        "**/__tests__/**/*.[jt]s?(x)",
-        "**/?(*.)+(spec|test).[tj]s?(x)",
-        '**/test/*.js'
-    ],
-
+        '<rootDir>/src/**/*.(test|spec).[jt]s?(x)',
+        '<rootDir>/src/**/__tests__/**/*.[jt]s?(x)',
+        '<rootDir>/src/**/test/*.[jt]s?(x)',
+      ],
+    
     // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
     // testPathIgnorePatterns: [
     //   "/node_modules/"
@@ -177,11 +207,20 @@ module.exports = {
     // A map from regular expressions to paths to transformers
     // transform: null,
 
+    //Transforms JavaScript and TypeScript files using Babel, allowing modern syntax and React/JSX.
+    transform: {
+        '^.+\\.[jt]sx?$': 'babel-jest', 
+      },
+
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
     // transformIgnorePatterns: [
     //   "/node_modules/"
     // ],
 
+    transformIgnorePatterns: [
+        '/node_modules/', // If any ESM deps need transpiling, whitelist them here.
+      ],
+    
     // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
     // unmockedModulePathPatterns: undefined,
 
